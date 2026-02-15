@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  region    String?
+  createdAt DateTime @default(now())
+
+  oauthAccounts OAuthAccount[]
+  subscriptions Subscription[]
+  emails        Email[] 
+}
+
+model OAuthAccount {
+  id           String   @id @default(uuid())
+  userId       String
+  provider     String
+  accessToken  String
+  refreshToken String
+  expiry       DateTime
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Subscription {
+  id          String   @id @default(uuid())
+  userId      String
+  provider    String
+  emailFrom   String
+  plan        String?
+  price       Float?
+  billingCycle String?
+  lastSeenAt  DateTime
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@unique([userId, provider])
+}
+
+
+model Email {
+  id            String   @id @default(uuid())
+  gmailMessageId String  @unique
+  userId        String
+  from          String
+  subject       String
+  date          String
+  snippet       String?
+  createdAt     DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
