@@ -1,17 +1,28 @@
+import { useNavigate } from "react-router-dom";
+
 function Dashboard() {
-  const token = localStorage.getItem("token");
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  };
 
   return (
     <div style={{ textAlign: "center", marginTop: "100px" }}>
       <h1>Dashboard</h1>
       <p>You are logged in ✅</p>
-      <p>Token:</p>
-      <textarea
-        value={token}
-        readOnly
-        rows={5}
-        cols={50}
-      />
+
+      <button
+        onClick={handleLogout}
+        style={{
+          marginTop: "20px",
+          padding: "10px 20px",
+          cursor: "pointer"
+        }}
+      >
+        Logout
+      </button>
     </div>
   );
 }
