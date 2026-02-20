@@ -14,6 +14,8 @@ model User {
   region    String?
   createdAt DateTime @default(now())
 
+  gmailLastSync DateTime?
+
   oauthAccounts OAuthAccount[]
   subscriptions Subscription[]
   emails        Email[] 
@@ -31,20 +33,28 @@ model OAuthAccount {
 }
 
 model Subscription {
-  id          String   @id @default(uuid())
-  userId      String
-  provider    String
-  emailFrom   String
-  plan        String?
-  price       Float?
-  billingCycle String?
-  lastSeenAt  DateTime
-  createdAt   DateTime @default(now())
+  id              String   @id @default(uuid())
+  userId          String
+
+  provider        String
+  plan            String?
+  price           Float?
+  currency        String?  @default("INR")
+
+  billingCycle    String?
+  nextBillingDate DateTime?
+
+  emailFrom       String?
+  source          SubscriptionSource @default(MANUAL)
+
+  status          SubscriptionStatus @default(ACTIVE)
+
+  lastSeenAt      DateTime?
+  createdAt       DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id])
 
   @@index([userId])
-  @@unique([userId, provider])
 }
 
 
@@ -61,4 +71,15 @@ model Email {
   user User @relation(fields: [userId], references: [id])
 
   @@index([userId])
+}
+
+enum SubscriptionSource {
+  MANUAL
+  EMAIL
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELLED
+  EXPIRED
 }
