@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "name": "subsync-ai",
+  "builds": [
+    {
+      "src": "client/package.json",
+      "use": "@vercel/create-react-app"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "client/$1"
+    }
+  ],
+  "env": {
+    "REACT_APP_API_URL": "https://subsync-ai-api.onrender.com/api"
+  }
+}
