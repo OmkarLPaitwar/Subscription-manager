@@ -1,0 +1,11 @@
+const router = require('express').Router();
+const ctrl = require('../controllers/authController');
+router.post('/register', ctrl.register);
+router.post('/login', ctrl.login);
+router.post('/google', ctrl.googleAuth);
+router.post('/refresh', ctrl.refreshToken);
+router.post('/forgot-password', ctrl.forgotPassword);
+router.put('/reset-password/:token', ctrl.resetPassword);
+router.get('/me', require('../middleware/auth').protect, ctrl.getMe);
+router.post('/logout', require('../middleware/auth').protect, ctrl.logout);
+module.exports = router;
