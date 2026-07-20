@@ -25,7 +25,11 @@ export default function Login() {
 
   const demoLogin = () => {
     setForm({ email: 'demo@subsync.ai', password: 'demo1234' });
+<<<<<<< HEAD
     toast.success('Demo credentials filled in');
+=======
+    toast('Demo credentials filled in!', { icon: '✨' });
+>>>>>>> a4018679ffdc8492f131e3a4c16fcdcb7dbc21b8
   };
 
   return (
@@ -60,10 +64,17 @@ export default function Login() {
               value={form.password} onChange={e => setForm({...form, password: e.target.value})} />
           </div>
           <button className="btn btn-primary" style={{ width:'100%', marginBottom:10 }} type="submit" disabled={loading}>
+<<<<<<< HEAD
             {loading ? 'Signing in...' : 'Sign In'}
           </button>
           <button className="btn btn-outline" style={{ width:'100%', fontSize:13 }} type="button" onClick={demoLogin}>
             Use Demo Account
+=======
+            {loading ? <span className="animate-spin">⏳</span> : 'Sign In →'}
+          </button>
+          <button className="btn btn-outline" style={{ width:'100%', fontSize:13 }} type="button" onClick={demoLogin}>
+            ✨ Use Demo Account
+>>>>>>> a4018679ffdc8492f131e3a4c16fcdcb7dbc21b8
           </button>
         </form>
 

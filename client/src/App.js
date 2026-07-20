@@ -3,6 +3,10 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
+<<<<<<< HEAD
+=======
+// Pages
+>>>>>>> a4018679ffdc8492f131e3a4c16fcdcb7dbc21b8
 import Landing      from './pages/Landing';
 import Login        from './pages/Login';
 import Signup       from './pages/Signup';
@@ -23,7 +27,11 @@ const PrivateRoute = ({ children }) => {
     <div style={{ minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', background:'#09090f' }}>
       <div style={{ textAlign:'center' }}>
         <div style={{ width:40, height:40, border:'3px solid #4f8ef730', borderTop:'3px solid #4f8ef7', borderRadius:'50%', animation:'spin 1s linear infinite', margin:'0 auto 16px' }}></div>
+<<<<<<< HEAD
         <div style={{ color:'#a0a0c0', fontSize:14 }}>Loading...</div>
+=======
+        <div style={{ color:'#a0a0c0', fontSize:14 }}>Loading SubSync AI…</div>
+>>>>>>> a4018679ffdc8492f131e3a4c16fcdcb7dbc21b8
       </div>
     </div>
   );

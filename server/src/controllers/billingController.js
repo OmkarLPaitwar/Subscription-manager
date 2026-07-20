@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 const { prisma, toPublicJSON } = require('../utils/db');
+=======
+const User = require('../models/User');
+>>>>>>> a4018679ffdc8492f131e3a4c16fcdcb7dbc21b8
 
 const PLANS = {
   starter:    { name: 'Starter',    price: 499,  subsLimit: 20,  features: ['20 subscriptions','Renewal alerts','Basic AI'] },
@@ -23,7 +27,11 @@ const generateInvoices = (plan) => {
   return inv;
 };
 
+<<<<<<< HEAD
 // route handler
+=======
+// @GET /api/billing/current-plan
+>>>>>>> a4018679ffdc8492f131e3a4c16fcdcb7dbc21b8
 exports.getCurrentPlan = async (req, res) => {
   try {
     const plan = req.user.plan || 'starter';
@@ -41,16 +49,25 @@ exports.getCurrentPlan = async (req, res) => {
   }
 };
 
+<<<<<<< HEAD
 // route handler
+=======
+// @GET /api/billing/plans
+>>>>>>> a4018679ffdc8492f131e3a4c16fcdcb7dbc21b8
 exports.getPlans = (req, res) => {
   res.json({ success: true, data: PLANS });
 };
 
+<<<<<<< HEAD
 // route handler
+=======
+// @POST /api/billing/upgrade
+>>>>>>> a4018679ffdc8492f131e3a4c16fcdcb7dbc21b8
 exports.upgradePlan = async (req, res) => {
   try {
     const { plan } = req.body;
     if (!PLANS[plan]) return res.status(400).json({ success: false, message: 'Invalid plan.' });
+<<<<<<< HEAD
     
     const user = await prisma.user.update({
       where: { id: req.user.id },
@@ -61,6 +78,14 @@ exports.upgradePlan = async (req, res) => {
     });
     
     res.json({ success: true, message: `Upgraded to ${PLANS[plan].name} plan.`, user: toPublicJSON(user) });
+=======
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      { plan, planExpiry: new Date(Date.now() + 30 * 86400000) },
+      { new: true }
+    );
+    res.json({ success: true, message: `Upgraded to ${PLANS[plan].name} plan.`, user: user.toPublicJSON() });
+>>>>>>> a4018679ffdc8492f131e3a4c16fcdcb7dbc21b8
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
