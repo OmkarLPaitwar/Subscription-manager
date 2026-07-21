@@ -40,23 +40,20 @@ services:
         sync: false
 
   # ── Frontend (Static Site) ─────────────────────────────────────────────────
-  # NOTE: Better to deploy frontend on Vercel (see vercel.json).
-  # Keeping this here as a fallback option.
+  # rootDir is set to "client" so Render runs inside client/ directory.
+  # buildCommand does: npm install (installs react-scripts) THEN npm run build
+  # This is the KEY FIX: without "npm install" here, react-scripts is missing.
   - type: web
     name: subsync-ai-client
     runtime: static
     rootDir: client
     plan: free
-    buildCommand: npm ci && npm run build      # deterministic install, keeps dev deps
+    buildCommand: npm install && npm run build
     staticPublishPath: build
     routes:
       - type: rewrite
         source: /*
-        destination: /index.html              # SPA fallback for React Router
+        destination: /index.html
     envVars:
       - key: REACT_APP_API_URL
-        sync: false                            # e.g. https://subsync-ai-api.onrender.com/api
-      - key: NODE_VERSION
-        value: "18.20.0"
-      - key: NPM_CONFIG_PRODUCTION
-        value: "false"
+        sync: false                  # Set to: https://subsync-ai-api.onrender.com/api
