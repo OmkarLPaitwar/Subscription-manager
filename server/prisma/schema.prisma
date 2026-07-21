@@ -1,5 +1,5 @@
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -16,8 +16,8 @@ model User {
   googleId            String?        @unique
   avatar              String         @default("")
   phone               String         @default("")
-  company             Json           @default("{\"name\":\"\",\"gst\":\"\",\"address\":\"\"}")
-  preferences         Json           @default("{\"currency\":\"INR\",\"theme\":\"dark\",\"emailNotifications\":true,\"smsAlerts\":false,\"weeklyReport\":true,\"twoFactor\":false}")
+  company             String         @default("{\"name\":\"\",\"gst\":\"\",\"address\":\"\"}")
+  preferences         String         @default("{\"currency\":\"INR\",\"theme\":\"dark\",\"emailNotifications\":true,\"smsAlerts\":false,\"weeklyReport\":true,\"twoFactor\":false}")
   plan                String         @default("starter")
   planExpiry          DateTime?
   isVerified          Boolean        @default(false)
@@ -53,10 +53,10 @@ model Subscription {
   icon              String        @default("🔷")
   color             String        @default("#4f8ef7")
   notes             String        @default("")
-  tags              Json          @default("[]")
-  usageStats        Json          @default("{\"lastUsed\":null,\"usageScore\":0,\"monthlyLogins\":0}")
-  aiAnalysis        Json          @default("{\"isUnused\":false,\"isDuplicate\":false,\"savingsSuggestion\":\"\",\"riskScore\":0,\"lastAnalyzed\":null}")
-  remindersSent     Json          @default("[]")
+  tags              String          @default("[]")
+  usageStats        String          @default("{\"lastUsed\":null,\"usageScore\":0,\"monthlyLogins\":0}")
+  aiAnalysis        String          @default("{\"isUnused\":false,\"isDuplicate\":false,\"savingsSuggestion\":\"\",\"riskScore\":0,\"lastAnalyzed\":null}")
+  remindersSent     String          @default("[]")
   isShared          Boolean       @default(false)
 
   costHistory       CostHistory[]
@@ -93,7 +93,7 @@ model Notification {
   isRead         Boolean       @default(false)
   isArchived     Boolean       @default(false)
   actionUrl      String        @default("")
-  metadata       Json          @default("{}")
+  metadata       String        @default("{}")
   emailSent      Boolean       @default(false)
   smsSent        Boolean       @default(false)
   readAt         DateTime?

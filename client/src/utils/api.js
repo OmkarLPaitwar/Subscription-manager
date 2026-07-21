@@ -8,22 +8,14 @@ const api = axios.create({
   timeout: 15000,
 });
 
-<<<<<<< HEAD
 
-=======
-// ─── Request interceptor: attach token ────────────────────────────────────────
->>>>>>> a4018679ffdc8492f131e3a4c16fcdcb7dbc21b8
 api.interceptors.request.use(config => {
   const token = localStorage.getItem('accessToken');
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 }, err => Promise.reject(err));
 
-<<<<<<< HEAD
 
-=======
-// ─── Response interceptor: auto-refresh token ─────────────────────────────────
->>>>>>> a4018679ffdc8492f131e3a4c16fcdcb7dbc21b8
 api.interceptors.response.use(
   res => res,
   async err => {
@@ -45,11 +37,7 @@ api.interceptors.response.use(
   }
 );
 
-<<<<<<< HEAD
 
-=======
-// ─── Auth ──────────────────────────────────────────────────────────────────────
->>>>>>> a4018679ffdc8492f131e3a4c16fcdcb7dbc21b8
 export const authAPI = {
   register:       data => api.post('/auth/register', data),
   login:          data => api.post('/auth/login', data),
@@ -60,11 +48,7 @@ export const authAPI = {
   resetPassword:  (token, data) => api.put(`/auth/reset-password/${token}`, data),
 };
 
-<<<<<<< HEAD
 
-=======
-// ─── Subscriptions ────────────────────────────────────────────────────────────
->>>>>>> a4018679ffdc8492f131e3a4c16fcdcb7dbc21b8
 export const subscriptionAPI = {
   getAll:       params => api.get('/subscriptions', { params }),
   getOne:       id     => api.get(`/subscriptions/${id}`),
@@ -77,11 +61,7 @@ export const subscriptionAPI = {
   bulkImport:   data   => api.post('/subscriptions/bulk-import', data),
 };
 
-<<<<<<< HEAD
 
-=======
-// ─── Analytics ────────────────────────────────────────────────────────────────
->>>>>>> a4018679ffdc8492f131e3a4c16fcdcb7dbc21b8
 export const analyticsAPI = {
   monthlySpend:       months => api.get('/analytics/monthly-spend', { params: { months } }),
   categoryBreakdown:  ()     => api.get('/analytics/category-breakdown'),
@@ -90,22 +70,14 @@ export const analyticsAPI = {
   topSubscriptions:   limit  => api.get('/analytics/top-subscriptions', { params: { limit } }),
 };
 
-<<<<<<< HEAD
 
-=======
-// ─── AI ───────────────────────────────────────────────────────────────────────
->>>>>>> a4018679ffdc8492f131e3a4c16fcdcb7dbc21b8
 export const aiAPI = {
   chat:       (message, history) => api.post('/ai/chat', { message, history }),
   analyze:    () => api.get('/ai/analyze'),
   getInsights:() => api.get('/ai/insights'),
 };
 
-<<<<<<< HEAD
 
-=======
-// ─── Notifications ────────────────────────────────────────────────────────────
->>>>>>> a4018679ffdc8492f131e3a4c16fcdcb7dbc21b8
 export const notificationAPI = {
   getAll:        params => api.get('/notifications', { params }),
   markRead:      id     => api.patch(`/notifications/${id}/read`),
@@ -114,22 +86,14 @@ export const notificationAPI = {
   unreadCount:   ()     => api.get('/notifications/unread-count'),
 };
 
-<<<<<<< HEAD
 
-=======
-// ─── Billing ──────────────────────────────────────────────────────────────────
->>>>>>> a4018679ffdc8492f131e3a4c16fcdcb7dbc21b8
 export const billingAPI = {
   getCurrentPlan: () => api.get('/billing/current-plan'),
   getPlans:       () => api.get('/billing/plans'),
   upgrade:        plan => api.post('/billing/upgrade', { plan }),
 };
 
-<<<<<<< HEAD
 
-=======
-// ─── Users ────────────────────────────────────────────────────────────────────
->>>>>>> a4018679ffdc8492f131e3a4c16fcdcb7dbc21b8
 export const userAPI = {
   updateProfile:     data => api.put('/users/profile', data),
   updatePreferences: data => api.put('/users/preferences', data),

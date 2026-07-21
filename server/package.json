@@ -5,17 +5,11 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
-<<<<<<< HEAD
     "dev": "nodemon src/index.js",
     "test": "jest"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
-=======
-    "dev": "nodemon src/index.js"
-  },
-  "dependencies": {
->>>>>>> a4018679ffdc8492f131e3a4c16fcdcb7dbc21b8
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
@@ -24,23 +18,15 @@
     "express-validator": "^7.1.0",
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
-<<<<<<< HEAD
-=======
-    "mongoose": "^8.4.1",
->>>>>>> a4018679ffdc8492f131e3a4c16fcdcb7dbc21b8
     "morgan": "^1.10.0",
     "node-cron": "^3.0.3",
     "nodemailer": "^6.9.14",
     "openai": "^4.52.1"
   },
   "devDependencies": {
-<<<<<<< HEAD
     "jest": "^30.4.2",
     "nodemon": "^3.1.4",
     "prisma": "^5.22.0",
     "supertest": "^7.2.2"
-=======
-    "nodemon": "^3.1.4"
->>>>>>> a4018679ffdc8492f131e3a4c16fcdcb7dbc21b8
   }
 }

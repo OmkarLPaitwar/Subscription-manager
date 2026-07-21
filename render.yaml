@@ -2,17 +2,13 @@
 # Docs: https://render.com/docs/blueprint-spec
 
 services:
-<<<<<<< HEAD
-  # backend api
-=======
   # ── Backend API ────────────────────────────────────────────────────────────
->>>>>>> a4018679ffdc8492f131e3a4c16fcdcb7dbc21b8
   - type: web
     name: subsync-ai-api
     runtime: node
     rootDir: server
     plan: free                       # Free tier (spins down after 15 min idle)
-    buildCommand: npm install
+    buildCommand: npm install && npx prisma generate
     startCommand: npm start
     healthCheckPath: /api/health
     envVars:
@@ -20,7 +16,7 @@ services:
         value: production
       - key: PORT
         value: 10000
-      - key: MONGODB_URI
+      - key: DATABASE_URL
         sync: false                  # Set manually in Render dashboard
       - key: JWT_SECRET
         generateValue: true          # Render auto-generates a secure value
@@ -43,11 +39,7 @@ services:
       - key: EMAIL_PASS
         sync: false
 
-<<<<<<< HEAD
-  # frontend fallback
-=======
   # ── Frontend (Static Site) ─────────────────────────────────────────────────
->>>>>>> a4018679ffdc8492f131e3a4c16fcdcb7dbc21b8
   # NOTE: Better to deploy frontend on Vercel (see vercel.json).
   # Keeping this here as a fallback option.
   - type: web

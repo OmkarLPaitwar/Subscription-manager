@@ -8,11 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser]       = useState(null);
   const [loading, setLoading] = useState(true);
 
-<<<<<<< HEAD
   // restore user session
-=======
-  // Boot: restore session
->>>>>>> a4018679ffdc8492f131e3a4c16fcdcb7dbc21b8
   useEffect(() => {
     const restore = async () => {
       const token = localStorage.getItem('accessToken');
@@ -39,11 +35,7 @@ export const AuthProvider = ({ children }) => {
     const { data } = await authAPI.register(formData);
     saveTokens(data.accessToken, data.refreshToken);
     setUser(data.user);
-<<<<<<< HEAD
     toast.success(`Welcome, ${data.user.firstName}!`);
-=======
-    toast.success(`Welcome to SubSync AI, ${data.user.firstName}! 🎉`);
->>>>>>> a4018679ffdc8492f131e3a4c16fcdcb7dbc21b8
     return data;
   }, []);
 
@@ -51,11 +43,7 @@ export const AuthProvider = ({ children }) => {
     const { data } = await authAPI.login(formData);
     saveTokens(data.accessToken, data.refreshToken);
     setUser(data.user);
-<<<<<<< HEAD
     toast.success(`Welcome back, ${data.user.firstName}!`);
-=======
-    toast.success(`Welcome back, ${data.user.firstName}! 👋`);
->>>>>>> a4018679ffdc8492f131e3a4c16fcdcb7dbc21b8
     return data;
   }, []);
 
@@ -63,11 +51,7 @@ export const AuthProvider = ({ children }) => {
     const { data } = await authAPI.googleAuth(googleData);
     saveTokens(data.accessToken, data.refreshToken);
     setUser(data.user);
-<<<<<<< HEAD
     toast.success(`Welcome, ${data.user.firstName}!`);
-=======
-    toast.success(`Welcome, ${data.user.firstName}! 🚀`);
->>>>>>> a4018679ffdc8492f131e3a4c16fcdcb7dbc21b8
     return data;
   }, []);
 

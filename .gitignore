@@ -32,3 +32,4 @@ Thumbs.db
 *.pid
 .nyc_output/
 coverage/
+server/prisma/dev.db
