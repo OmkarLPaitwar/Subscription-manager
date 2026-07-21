@@ -1,6 +1,10 @@
 import axios from 'axios';
 
-const BASE_URL = process.env.REACT_APP_API_URL || '/api';
+let BASE_URL = process.env.REACT_APP_API_URL || '/api';
+if (!BASE_URL.endsWith('/api') && BASE_URL !== '/api') {
+  // If the user forgot to add /api in their Vercel env vars, add it automatically
+  BASE_URL = BASE_URL.endsWith('/') ? `${BASE_URL}api` : `${BASE_URL}/api`;
+}
 
 const api = axios.create({
   baseURL: BASE_URL,
