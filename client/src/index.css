@@ -205,3 +205,57 @@ tr:hover td { background: rgba(255,255,255,.015); }
   position: absolute; border-radius: 50%;
   filter: blur(80px); opacity: .12; pointer-events: none;
 }
+
+/* ─── Responsive Media Queries ────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .dashboard-main, .main { marginLeft: 0 !important; }
+  .dashboard-sidebar, .sidebar { transform: translateX(-100%); }
+  .dashboard-sidebar.open, .sidebar.open { transform: translateX(0); }
+  .menuBtn { display: block !important; }
+}
+
+@media (max-width: 768px) {
+  .content { padding: 16px !important; }
+  .topBar { padding: 0 16px !important; }
+  .card { padding: 16px !important; }
+  
+  /* Stack tables for mobile */
+  table, thead, tbody, th, td, tr { 
+    display: block; 
+  }
+  thead tr { 
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+  tr { border: 1px solid var(--border); margin-bottom: 10px; border-radius: 8px; }
+  td { 
+    border: none;
+    border-bottom: 1px solid var(--border); 
+    position: relative;
+    padding-left: 50%; 
+    text-align: right;
+  }
+  td:before { 
+    content: attr(data-label); 
+    position: absolute;
+    left: 12px;
+    width: 45%; 
+    padding-right: 10px; 
+    white-space: nowrap;
+    text-align: left;
+    font-weight: bold;
+    color: var(--text3);
+    font-size: 11px;
+    text-transform: uppercase;
+  }
+  
+  /* Adjust modal sizes */
+  .modal { padding: 20px !important; margin: 10px !important; max-height: 90vh; overflow-y: auto; }
+}
+
+@media (max-width: 480px) {
+  .topTitle { font-size: 1rem !important; }
+  .iconBtn { width: 32px; height: 32px; }
+  .dashboard-grid { grid-template-columns: 1fr !important; }
+}

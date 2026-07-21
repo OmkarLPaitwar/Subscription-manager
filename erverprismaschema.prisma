@@ -1,0 +1,104 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                  String         @id @default(uuid())
+  firstName           String
+  lastName            String
+  email               String         @unique
+  password            String?
+  googleId            String?        @unique
+  avatar              String         @default("")
+  phone               String         @default("")
+  company             String         @default("{\"name\":\"\",\"gst\":\"\",\"address\":\"\"}")
+  preferences         String         @default("{\"currency\":\"INR\",\"theme\":\"dark\",\"emailNotifications\":true,\"smsAlerts\":false,\"weeklyReport\":true,\"twoFactor\":false}")
+  plan                String         @default("starter")
+  planExpiry          DateTime?
+  isVerified          Boolean        @default(false)
+  isActive            Boolean        @default(true)
+  lastLogin           DateTime?
+  resetPasswordToken  String?
+  resetPasswordExpire DateTime?
+  emailVerifyToken    String?
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+
+  subscriptions       Subscription[] @relation("UserSubscriptions")
+  sharedSubscriptions Subscription[] @relation("SharedSubscriptions")
+  notifications       Notification[]
+
+  @@index([email])
+}
+
+model Subscription {
+  id                String        @id @default(uuid())
+  userId            String
+  user              User          @relation("UserSubscriptions", fields: [userId], references: [id], onDelete: Cascade)
+  name              String
+  category          String        @default("Other")
+  cost              Float
+  currency          String        @default("INR")
+  billingCycle      String        @default("Monthly")
+  renewalDate       DateTime
+  startDate         DateTime      @default(now())
+  status            String        @default("Active")
+  paymentMethod     String        @default("Card")
+  website           String        @default("")
+  icon              String        @default("🔷")
+  color             String        @default("#4f8ef7")
+  notes             String        @default("")
+  tags              String          @default("[]")
+  usageStats        String          @default("{\"lastUsed\":null,\"usageScore\":0,\"monthlyLogins\":0}")
+  aiAnalysis        String          @default("{\"isUnused\":false,\"isDuplicate\":false,\"savingsSuggestion\":\"\",\"riskScore\":0,\"lastAnalyzed\":null}")
+  remindersSent     String          @default("[]")
+  isShared          Boolean       @default(false)
+
+  costHistory       CostHistory[]
+  sharedWith        User[]        @relation("SharedSubscriptions")
+  notifications     Notification[]
+
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  @@index([userId, status])
+  @@index([userId, renewalDate])
+  @@index([userId, category])
+}
+
+model CostHistory {
+  id             String       @id @default(uuid())
+  subscriptionId String
+  subscription   Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  cost           Float
+  changedAt      DateTime     @default(now())
+  changedFrom    Float
+}
+
+model Notification {
+  id             String        @id @default(uuid())
+  userId         String
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subscriptionId String?
+  subscription   Subscription? @relation(fields: [subscriptionId], references: [id], onDelete: SetNull)
+  type           String
+  title          String
+  message        String
+  priority       String        @default("medium")
+  isRead         Boolean       @default(false)
+  isArchived     Boolean       @default(false)
+  actionUrl      String        @default("")
+  metadata       String        @default("{}")
+  emailSent      Boolean       @default(false)
+  smsSent        Boolean       @default(false)
+  readAt         DateTime?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([userId, isRead, createdAt(sort: Desc)])
+}
