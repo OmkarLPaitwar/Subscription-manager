@@ -248,8 +248,8 @@ export default function Landing() {
             ))}
           </div>
           <div style={{ borderTop:'1px solid var(--border)', paddingTop:24, display:'flex', justifyContent:'space-between', alignItems:'center', fontSize:13, color:'var(--text3)', flexWrap:'wrap', gap:10 }}>
-            <span>© 2025 SubSync AI. All rights reserved.</span>
-            <span>Made with ❤️ in India 🇮🇳</span>
+            <span>© 2026 SubSync AI. All rights reserved.</span>
+            <span>Developed By Omkar Paitwar</span>
           </div>
         </div>
       </footer>
