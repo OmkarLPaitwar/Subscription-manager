@@ -37,13 +37,13 @@ subsync-ai/
 
 ### Prerequisites
 - Node.js 18+ and npm
-- MongoDB (local) OR free MongoDB Atlas cluster
+- A PostgreSQL database (local, or a free hosted one — see below)
 - Git
 
 ### 1. Clone & Install
 ```bash
-git clone https://github.com/yourusername/subsync-ai.git
-cd subsync-ai
+git clone https://github.com/OmkarLPaitwar/Subscription-manager.git
+cd Subscription-manager
 
 # Install root deps
 npm install
@@ -59,20 +59,26 @@ cd client && npm install && cd ..
 ```bash
 # Server
 cp server/.env.example server/.env
-# Edit server/.env with your MongoDB URI and JWT secrets
-
-# Client (optional for local)
-cp client/.env.example client/.env
+# Edit server/.env with your PostgreSQL DATABASE_URL and JWT secrets
 ```
 
 **Minimum required in `server/.env`:**
 ```env
-MONGODB_URI=mongodb://localhost:27017/subsync-ai
+DATABASE_URL=postgresql://user:password@localhost:5432/subsync_ai
 JWT_SECRET=any-long-random-string-32-chars-min
 JWT_REFRESH_SECRET=another-long-random-string
 ```
 
-### 3. Start Development Servers
+### 3. Set up the database schema
+This project uses **Prisma** with **PostgreSQL** (not MongoDB). After setting `DATABASE_URL`, push the schema to your database:
+```bash
+cd server
+npx prisma generate
+npx prisma db push
+cd ..
+```
+
+### 4. Start Development Servers
 ```bash
 # From root — starts both backend (port 5000) and frontend (port 3000)
 npm run dev
@@ -88,25 +94,29 @@ Open: http://localhost:3000
 
 ## 🗄️ Database Setup
 
-### Option A: MongoDB Atlas (Free Cloud — Recommended)
-1. Go to https://cloud.mongodb.com → Create free account
-2. Create a **Free Shared Cluster** (M0 tier — free forever)
-3. Add a database user: Security → Database Access
-4. Whitelist IP: Security → Network Access → Add `0.0.0.0/0` (all IPs)
-5. Click **Connect** → **Drivers** → Copy connection string
-6. Paste into `server/.env`:
-   ```env
-   MONGODB_URI=mongodb+srv://username:password@cluster0.xxxxx.mongodb.net/subsync-ai
-   ```
+This project uses **PostgreSQL via Prisma ORM**.
 
-### Option B: Local MongoDB
+### Option A: Neon or Supabase (Free Cloud — Recommended)
+1. Go to https://neon.tech or https://supabase.com → Create a free account
+2. Create a new free project/database
+3. Copy the connection string it gives you
+4. Paste into `server/.env`:
+   ```env
+   DATABASE_URL=postgresql://user:password@host/dbname?sslmode=require
+   ```
+5. Run `npx prisma db push` inside `server/` to create the tables
+
+### Option B: Local PostgreSQL
 ```bash
 # macOS
-brew tap mongodb/brew && brew install mongodb-community && brew services start mongodb-community
+brew install postgresql@16 && brew services start postgresql@16
+createdb subsync_ai
 
 # Ubuntu
-sudo apt install mongodb && sudo systemctl start mongodb
+sudo apt install postgresql && sudo systemctl start postgresql
+sudo -u postgres createdb subsync_ai
 ```
+Then set `DATABASE_URL=postgresql://postgres:yourpassword@localhost:5432/subsync_ai` in `server/.env`.
 
 ---
 
@@ -114,9 +124,9 @@ sudo apt install mongodb && sudo systemctl start mongodb
 
 ### Architecture for Free Hosting:
 ```
-Frontend  → Vercel (free)        → subsync-ai.vercel.app
-Backend   → Render.com (free)    → subsync-ai-api.onrender.com
-Database  → MongoDB Atlas (free) → cloud cluster
+Frontend  → Vercel (free)             → subscription-manager.vercel.app
+Backend   → Render.com (free)         → subsync-ai-api.onrender.com
+Database  → Neon / Supabase (free)    → managed PostgreSQL
 ```
 
 ---
