@@ -19,18 +19,23 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('fetch', event => {
+  // Skip cross-origin requests, non-GET requests, and API requests
+  if (
+    event.request.method !== 'GET' ||
+    event.request.url.includes('/api/') ||
+    !event.request.url.startsWith(self.location.origin)
+  ) {
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request)
       .then(response => {
         if (response) {
           return response;
         }
-        return fetch(event.request).catch(error => {
-          // If offline and the request fails, just return what we have (or a fallback)
-          console.log('Fetch failed; returning offline page instead.', error);
-        });
-      }
-    )
+        return fetch(event.request);
+      })
   );
 });
 
