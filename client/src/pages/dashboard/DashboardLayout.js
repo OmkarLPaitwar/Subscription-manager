@@ -61,13 +61,14 @@ export default function DashboardLayout() {
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div onClick={() => setSidebarOpen(false)}
-          style={{ position:'fixed', inset:0, background:'rgba(0,0,0,.6)', zIndex:99, display:'none' /* shown via media query */ }} />
+          style={{ position:'fixed', inset:0, background:'rgba(0,0,0,.6)', zIndex:99 }} />
       )}
 
       {/* SIDEBAR */}
-      <aside style={{ ...S.sidebar, transform: sidebarOpen ? 'translateX(0)' : undefined }}>
-        <div style={S.sidebarLogo}>
-          <span onClick={() => navigate('/')} style={S.logo}>SubSync AI</span>
+      <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`} style={{ ...S.sidebar, transform: sidebarOpen ? 'translateX(0)' : undefined }}>
+        <div style={{ ...S.sidebarLogo, display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }} onClick={() => navigate('/')}>
+          <img src="/logo192.png" alt="Logo" style={{ height: '32px', width: '32px', borderRadius: '6px' }} />
+          <span style={S.logo}>SubSync AI</span>
         </div>
 
         <div style={S.sidebarSection}>Main</div>
@@ -105,11 +106,11 @@ export default function DashboardLayout() {
       </aside>
 
       {/* MAIN */}
-      <div style={S.main}>
+      <div className="main" style={S.main}>
         {/* Top Bar */}
         <div style={S.topBar}>
           <div style={{ display:'flex', alignItems:'center', gap:12 }}>
-            <button style={S.menuBtn} onClick={() => setSidebarOpen(!sidebarOpen)}>☰</button>
+            <button className="menuBtn" style={S.menuBtn} onClick={() => setSidebarOpen(!sidebarOpen)}>☰</button>
             <h1 style={S.topTitle}>{title}</h1>
           </div>
           <div style={{ display:'flex', alignItems:'center', gap:10 }}>

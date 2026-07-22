@@ -180,7 +180,7 @@ export default function Subscriptions() {
                   const urgency = days <= 3 ? 'var(--red)' : days <= 7 ? 'var(--amber)' : 'var(--text2)';
                   return (
                     <tr key={sub._id}>
-                      <td>
+                      <td data-label="Service">
                         <div style={{ display:'flex', alignItems:'center', gap:10 }}>
                           <div style={{ width:32, height:32, borderRadius:8, background:'var(--bg3)', border:'1px solid var(--border)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:15 }}>{sub.icon || '📦'}</div>
                           <div>
@@ -189,21 +189,21 @@ export default function Subscriptions() {
                           </div>
                         </div>
                       </td>
-                      <td><span className="badge badge-blue">{sub.category}</span></td>
-                      <td style={{ fontWeight:700 }}>₹{(sub.monthlyCost || sub.cost).toLocaleString()}</td>
-                      <td style={{ color:'var(--text2)', fontSize:13 }}>{sub.billingCycle}</td>
-                      <td>
+                      <td data-label="Category"><span className="badge badge-blue">{sub.category}</span></td>
+                      <td data-label="Monthly Cost" style={{ fontWeight:700 }}>₹{(sub.monthlyCost || sub.cost).toLocaleString()}</td>
+                      <td data-label="Billing" style={{ color:'var(--text2)', fontSize:13 }}>{sub.billingCycle}</td>
+                      <td data-label="Renewal Date">
                         <div style={{ fontSize:13, color: urgency, fontWeight: days <= 7 ? 600 : 400 }}>
                           {new Date(sub.renewalDate).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' })}
                           {days <= 7 && days > 0 && <div style={{ fontSize:10 }}>({days}d left)</div>}
                         </div>
                       </td>
-                      <td>
+                      <td data-label="Status">
                         <span className={`badge ${sub.status === 'Active' ? 'badge-green' : sub.status === 'Paused' ? 'badge-amber' : 'badge-red'}`}>
                           {sub.status === 'Active' ? '● ' : '○ '}{sub.status}
                         </span>
                       </td>
-                      <td>
+                      <td data-label="Actions">
                         <button className="btn btn-outline btn-sm" style={{ marginRight:6 }} onClick={() => openEdit(sub)}>Edit</button>
                         <button className="btn btn-outline btn-sm" style={{ marginRight:6 }} onClick={() => handleStatusToggle(sub)}>
                           {sub.status === 'Active' ? 'Pause' : 'Resume'}

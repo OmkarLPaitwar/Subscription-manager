@@ -50,7 +50,10 @@ export default function Landing() {
     <div>
       {/* NAV */}
       <nav style={{ position:'fixed', top:0, left:0, right:0, zIndex:100, padding:'0 5%', height:66, display:'flex', alignItems:'center', justifyContent:'space-between', transition:'all .3s', background: scrolled ? 'var(--bg)' : 'transparent', borderBottom: scrolled ? '1px solid var(--border)' : 'none', backdropFilter: scrolled ? 'blur(12px)' : 'none' }}>
-        <span style={{ fontFamily:'Syne,sans-serif', fontSize:22, fontWeight:800, background:'var(--grad)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text', cursor:'pointer' }} onClick={() => window.scrollTo(0,0)}>SubSync AI</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }} onClick={() => window.scrollTo(0,0)}>
+          <img src="/logo192.png" alt="Logo" style={{ height: '32px', width: '32px', borderRadius: '6px' }} />
+          <span style={{ fontFamily:'Syne,sans-serif', fontSize:22, fontWeight:800, background:'var(--grad)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>SubSync AI</span>
+        </div>
         <div style={{ display:'flex', gap:28, alignItems:'center' }}>
           {['features','how-it-works','pricing','testimonials'].map(s => (
             <span key={s} onClick={() => scrollTo(s)} style={{ color:'var(--text2)', fontSize:14, fontWeight:500, cursor:'pointer', textTransform:'capitalize', transition:'color .2s' }}
@@ -199,7 +202,10 @@ export default function Landing() {
         <div style={{ maxWidth:1200, margin:'0 auto' }}>
           <div style={{ display:'grid', gridTemplateColumns:'2fr 1fr 1fr 1fr', gap:40, marginBottom:40 }}>
             <div>
-              <div style={{ fontFamily:'Syne,sans-serif', fontSize:20, fontWeight:800, background:'var(--grad)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text', marginBottom:12 }}>SubSync AI</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: 12 }}>
+                <img src="/logo192.png" alt="Logo" style={{ height: '24px', width: '24px', borderRadius: '5px' }} />
+                <span style={{ fontFamily:'Syne,sans-serif', fontSize:20, fontWeight:800, background:'var(--grad)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>SubSync AI</span>
+              </div>
               <p style={{ color:'var(--text2)', fontSize:13, lineHeight:1.7, maxWidth:240 }}>The intelligent subscription management platform for modern businesses and individuals.</p>
             </div>
             {[

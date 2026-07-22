@@ -212,12 +212,14 @@ tr:hover td { background: rgba(255,255,255,.015); }
   .dashboard-sidebar, .sidebar { transform: translateX(-100%); }
   .dashboard-sidebar.open, .sidebar.open { transform: translateX(0); }
   .menuBtn { display: block !important; }
+  .charts-grid, .bottom-grid { grid-template-columns: 1fr !important; }
 }
 
 @media (max-width: 768px) {
   .content { padding: 16px !important; }
   .topBar { padding: 0 16px !important; }
   .card { padding: 16px !important; }
+  .metrics-grid { grid-template-columns: repeat(2, 1fr) !important; }
   
   /* Stack tables for mobile */
   table, thead, tbody, th, td, tr { 
@@ -258,4 +260,5 @@ tr:hover td { background: rgba(255,255,255,.015); }
   .topTitle { font-size: 1rem !important; }
   .iconBtn { width: 32px; height: 32px; }
   .dashboard-grid { grid-template-columns: 1fr !important; }
+  .metrics-grid { grid-template-columns: 1fr !important; }
 }

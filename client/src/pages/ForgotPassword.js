@@ -25,7 +25,10 @@ export default function ForgotPassword() {
     <div style={{ minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', padding:'60px 20px', position:'relative', overflow:'hidden' }}>
       <div className="orb" style={{ width:300, height:300, background:'var(--blue)', top:-80, left:-80 }} />
       <div className="glass animate-fadeUp" style={{ width:'100%', maxWidth:400, padding:40, position:'relative', zIndex:1 }}>
-        <Link to="/" style={{ fontFamily:'Syne,sans-serif', fontSize:22, fontWeight:800, background:'var(--grad)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text', display:'block', marginBottom:24 }}>SubSync AI</Link>
+        <Link to="/" style={{ fontFamily:'Syne,sans-serif', fontSize:22, fontWeight:800, background:'var(--grad)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text', display:'flex', alignItems:'center', gap:'8px', marginBottom:24 }}>
+          <img src="/logo192.png" alt="Logo" style={{ height: '32px', width: '32px', borderRadius: '6px' }} />
+          SubSync AI
+        </Link>
         {sent ? (
           <div style={{ textAlign:'center', padding:'20px 0' }}>
             <div style={{ fontSize:48, marginBottom:16 }}>📧</div>

@@ -31,7 +31,10 @@ export default function Signup() {
       <div className="orb" style={{ width:400, height:400, background:'var(--blue)', top:-100, left:-100 }} />
       <div className="orb" style={{ width:300, height:300, background:'var(--purple)', bottom:-80, right:-80 }} />
       <div className="glass animate-fadeUp" style={{ width:'100%', maxWidth:440, padding:40, position:'relative', zIndex:1 }}>
-        <Link to="/" style={{ fontFamily:'Syne,sans-serif', fontSize:22, fontWeight:800, background:'var(--grad)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text', display:'block', marginBottom:24 }}>SubSync AI</Link>
+        <Link to="/" style={{ fontFamily:'Syne,sans-serif', fontSize:22, fontWeight:800, background:'var(--grad)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text', display:'flex', alignItems:'center', gap:'8px', marginBottom:24 }}>
+          <img src="/logo192.png" alt="Logo" style={{ height: '32px', width: '32px', borderRadius: '6px' }} />
+          SubSync AI
+        </Link>
         <h2 style={{ fontSize:'1.8rem', fontWeight:800, marginBottom:6 }}>Start saving today</h2>
         <p style={{ color:'var(--text2)', fontSize:14, marginBottom:28 }}>Create your free account — no credit card required</p>
 

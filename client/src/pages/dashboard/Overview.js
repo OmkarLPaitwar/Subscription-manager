@@ -61,7 +61,7 @@ export default function Overview() {
   return (
     <div style={{ animation:'fadeUp .4s ease' }}>
       {/* Metrics */}
-      <div style={S.metricsGrid}>
+      <div className="dashboard-grid metrics-grid" style={S.metricsGrid}>
         <MetricCard icon="💳" label="Active Subscriptions" value={summary?.totalActive ?? '—'} change={`${summary?.totalActive ?? 0} tracked tools`} changeType="neutral" color="var(--blue)" loading={loading} />
         <MetricCard icon="💰" label="Monthly Spend"        value={loading ? '—' : fmt(summary?.totalMonthly ?? 0)} change={`₹${Math.round((summary?.totalMonthly ?? 0) * 12).toLocaleString()}/year`} changeType="neutral" color="var(--purple)" loading={loading} />
         <MetricCard icon="⏰" label="Renewals This Week"  value={summary?.upcomingRenewals?.length ?? '—'} change={summary?.upcomingRenewals?.map(s => s.name).slice(0,2).join(', ') || 'None upcoming'} changeType="neutral" color="var(--amber)" loading={loading} />
@@ -69,7 +69,7 @@ export default function Overview() {
       </div>
 
       {/* Charts Row */}
-      <div style={S.chartsGrid}>
+      <div className="dashboard-grid charts-grid" style={S.chartsGrid}>
         {/* Spend Bar Chart */}
         <div className="card" style={{ padding:20 }}>
           <div style={S.chartHeader}>
@@ -126,7 +126,7 @@ export default function Overview() {
       </div>
 
       {/* Category + Insights */}
-      <div style={S.bottomGrid}>
+      <div className="dashboard-grid bottom-grid" style={S.bottomGrid}>
         {/* Pie Chart */}
         <div className="card" style={{ padding:20 }}>
           <div style={S.chartHeader}><span style={S.chartTitle}>Category Breakdown</span></div>

@@ -34,7 +34,10 @@ export default function Login() {
       <div className="orb" style={{ width:300, height:300, background:'var(--purple)', bottom:-80, right:-80 }} />
 
       <div className="glass animate-fadeUp" style={styles.card}>
-        <Link to="/" style={styles.logo}>SubSync AI</Link>
+        <Link to="/" style={{ ...styles.logo, display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <img src="/logo192.png" alt="Logo" style={{ height: '32px', width: '32px', borderRadius: '6px' }} />
+          SubSync AI
+        </Link>
         <h2 style={styles.title}>Welcome back</h2>
         <p style={styles.sub}>Sign in to your subscription dashboard</p>
 
