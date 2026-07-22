@@ -37,6 +37,7 @@ const PRICING = [
 export default function Landing() {
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 20);
@@ -49,12 +50,14 @@ export default function Landing() {
   return (
     <div>
       {/* NAV */}
-      <nav style={{ position:'fixed', top:0, left:0, right:0, zIndex:100, padding:'0 5%', height:66, display:'flex', alignItems:'center', justifyContent:'space-between', transition:'all .3s', background: scrolled ? 'var(--bg)' : 'transparent', borderBottom: scrolled ? '1px solid var(--border)' : 'none', backdropFilter: scrolled ? 'blur(12px)' : 'none' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }} onClick={() => window.scrollTo(0,0)}>
+      <nav style={{ position:'fixed', top:0, left:0, right:0, zIndex:100, padding:'0 5%', height:66, display:'flex', alignItems:'center', justifyContent:'space-between', transition:'all .3s', background: (scrolled || mobileMenuOpen) ? 'var(--bg2)' : 'transparent', borderBottom: (scrolled || mobileMenuOpen) ? '1px solid var(--border)' : 'none', backdropFilter: (scrolled || mobileMenuOpen) ? 'blur(12px)' : 'none' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }} onClick={() => { window.scrollTo(0,0); setMobileMenuOpen(false); }}>
           <img src="/logo192.png" alt="Logo" style={{ height: '32px', width: '32px', borderRadius: '6px' }} />
           <span style={{ fontFamily:'Syne,sans-serif', fontSize:22, fontWeight:800, background:'var(--grad)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>SubSync AI</span>
         </div>
-        <div style={{ display:'flex', gap:28, alignItems:'center' }}>
+        
+        {/* Desktop nav links */}
+        <div className="landing-nav-links" style={{ display:'flex', gap:28, alignItems:'center' }}>
           {['features','how-it-works','pricing','testimonials'].map(s => (
             <span key={s} onClick={() => scrollTo(s)} style={{ color:'var(--text2)', fontSize:14, fontWeight:500, cursor:'pointer', textTransform:'capitalize', transition:'color .2s' }}
               onMouseEnter={e => e.target.style.color='var(--text)'}
@@ -63,10 +66,35 @@ export default function Landing() {
             </span>
           ))}
         </div>
-        <div style={{ display:'flex', gap:10 }}>
+
+        {/* Desktop CTA buttons */}
+        <div className="landing-nav-buttons" style={{ display:'flex', gap:10 }}>
           <button className="btn btn-outline btn-sm" onClick={() => navigate('/login')}>Log In</button>
           <button className="btn btn-primary btn-sm" onClick={() => navigate('/signup')}>Get Started</button>
         </div>
+
+        {/* Hamburger Menu Toggle (Mobile) */}
+        <button className="landing-menu-btn" 
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          style={{ background:'transparent', border:'none', color:'var(--text)', fontSize:24, cursor:'pointer' }}>
+          {mobileMenuOpen ? '✕' : '☰'}
+        </button>
+
+        {/* Mobile menu drawer */}
+        {mobileMenuOpen && (
+          <div className="landing-mobile-menu" style={{ position:'absolute', top:66, left:0, right:0, background:'var(--bg2)', borderBottom:'1px solid var(--border)', padding:'20px 5% 30px', display:'flex', flexDirection:'column', gap:20, zIndex:99 }}>
+            {['features','how-it-works','pricing','testimonials'].map(s => (
+              <span key={s} onClick={() => { scrollTo(s); setMobileMenuOpen(false); }} 
+                style={{ color:'var(--text2)', fontSize:16, fontWeight:600, cursor:'pointer', textTransform:'capitalize', padding:'10px 0', borderBottom:'1px solid var(--border)' }}>
+                {s.replace('-',' ')}
+              </span>
+            ))}
+            <div style={{ display:'flex', flexDirection:'column', gap:12, marginTop:10 }}>
+              <button className="btn btn-outline" style={{ justifyContent:'center' }} onClick={() => { navigate('/login'); setMobileMenuOpen(false); }}>Log In</button>
+              <button className="btn btn-primary" style={{ justifyContent:'center' }} onClick={() => { navigate('/signup'); setMobileMenuOpen(false); }}>Get Started</button>
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* HERO */}
@@ -126,8 +154,8 @@ export default function Landing() {
           <div style={S.sectionTag}>Process</div>
           <h2 style={S.sectionTitle}>How <span className="grad-text">SubSync AI</span> works</h2>
         </div>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:24, position:'relative' }}>
-          <div style={{ position:'absolute', top:44, left:'calc(16.67% + 20px)', right:'calc(16.67% + 20px)', height:2, background:'linear-gradient(to right,var(--blue),var(--purple))', zIndex:0 }} />
+        <div className="process-grid" style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:24, position:'relative' }}>
+          <div className="process-line" style={{ position:'absolute', top:44, left:'calc(16.67% + 20px)', right:'calc(16.67% + 20px)', height:2, background:'linear-gradient(to right,var(--blue),var(--purple))', zIndex:0 }} />
           {STEPS.map((step, i) => (
             <div key={i} className="glass" style={{ padding:'28px 20px', textAlign:'center', position:'relative', zIndex:1, transition:'transform .3s' }}
               onMouseEnter={e => e.currentTarget.style.transform='translateY(-6px)'}
@@ -147,7 +175,7 @@ export default function Landing() {
           <h2 style={S.sectionTitle}>Simple, <span className="grad-text">transparent</span> pricing</h2>
           <p style={S.sectionSub}>Start free, scale as you grow. Every plan includes AI-powered insights.</p>
         </div>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:20 }}>
+        <div className="pricing-grid" style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:20 }}>
           {PRICING.map((plan, i) => (
             <div key={i} style={{ padding:28, borderRadius:'var(--r)', border:`1px solid ${plan.featured ? 'var(--purple)' : 'var(--border)'}`, background: plan.featured ? 'linear-gradient(135deg,rgba(139,92,246,.08),rgba(79,142,247,.04))' : 'var(--card)', position:'relative', transition:'transform .3s' }}
               onMouseEnter={e => e.currentTarget.style.transform='translateY(-6px)'}
@@ -176,7 +204,7 @@ export default function Landing() {
           <div style={S.sectionTag}>Testimonials</div>
           <h2 style={S.sectionTitle}>Loved by <span className="grad-text">founders & teams</span></h2>
         </div>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:18 }}>
+        <div className="testimonials-grid" style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:18 }}>
           {TESTIMONIALS.map((t, i) => (
             <div key={i} className="card" style={{ padding:24 }}>
               <div style={{ color:'var(--amber)', fontSize:14, marginBottom:14 }}>{'★'.repeat(t.stars)}</div>
@@ -200,7 +228,7 @@ export default function Landing() {
       {/* FOOTER */}
       <footer style={{ padding:'50px 5% 30px', borderTop:'1px solid var(--border)' }}>
         <div style={{ maxWidth:1200, margin:'0 auto' }}>
-          <div style={{ display:'grid', gridTemplateColumns:'2fr 1fr 1fr 1fr', gap:40, marginBottom:40 }}>
+          <div className="landing-footer-grid" style={{ display:'grid', gridTemplateColumns:'2fr 1fr 1fr 1fr', gap:40, marginBottom:40 }}>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: 12 }}>
                 <img src="/logo192.png" alt="Logo" style={{ height: '24px', width: '24px', borderRadius: '5px' }} />
