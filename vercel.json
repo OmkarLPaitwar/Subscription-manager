@@ -1,11 +1,16 @@
 {
-  "buildCommand": "cd client && npm install && npm run build",
-  "outputDirectory": "client/build",
-  "framework": null,
-  "rewrites": [
+  "version": 2,
+  "name": "subsync-ai",
+  "builds": [
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "src": "client/package.json",
+      "use": "@vercel/create-react-app"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "client/$1"
     }
   ],
   "env": {
