@@ -61,7 +61,7 @@ export default function Subscriptions() {
 
   const openAdd  = () => { setEditId(null); setForm(emptyForm); setModal(true); };
   const openEdit = (sub) => {
-    setEditId(sub._id);
+    setEditId(sub.id);
     setForm({ name: sub.name, category: sub.category, cost: sub.cost, billingCycle: sub.billingCycle,
               renewalDate: sub.renewalDate?.slice(0,10) || '', paymentMethod: sub.paymentMethod || '',
               icon: sub.icon || '🔷', color: sub.color || '#4f8ef7', notes: sub.notes || '' });
@@ -98,7 +98,7 @@ export default function Subscriptions() {
   const handleStatusToggle = async (sub) => {
     const newStatus = sub.status === 'Active' ? 'Paused' : 'Active';
     try {
-      await subscriptionAPI.updateStatus(sub._id, newStatus);
+      await subscriptionAPI.updateStatus(sub.id, newStatus);
       toast.success(`${sub.name} ${newStatus.toLowerCase()}.`);
       load();
     } catch { toast.error('Failed to update status.'); }
@@ -179,7 +179,7 @@ export default function Subscriptions() {
                   const days = Math.ceil((new Date(sub.renewalDate) - new Date()) / 86400000);
                   const urgency = days <= 3 ? 'var(--red)' : days <= 7 ? 'var(--amber)' : 'var(--text2)';
                   return (
-                    <tr key={sub._id}>
+                    <tr key={sub.id}>
                       <td data-label="Service">
                         <div style={{ display:'flex', alignItems:'center', gap:10 }}>
                           <div style={{ width:32, height:32, borderRadius:8, background:'var(--bg3)', border:'1px solid var(--border)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:15 }}>{sub.icon || '📦'}</div>
@@ -208,7 +208,7 @@ export default function Subscriptions() {
                         <button className="btn btn-outline btn-sm" style={{ marginRight:6 }} onClick={() => handleStatusToggle(sub)}>
                           {sub.status === 'Active' ? 'Pause' : 'Resume'}
                         </button>
-                        <button className="btn btn-danger btn-sm" onClick={() => handleDelete(sub._id, sub.name)}>Delete</button>
+                        <button className="btn btn-danger btn-sm" onClick={() => handleDelete(sub.id, sub.name)}>Delete</button>
                       </td>
                     </tr>
                   );
