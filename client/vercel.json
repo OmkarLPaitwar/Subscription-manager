@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "name": "subsync-ai-client",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "env": {
+    "REACT_APP_API_URL": "https://subsync-ai-api.onrender.com/api"
+  }
+}

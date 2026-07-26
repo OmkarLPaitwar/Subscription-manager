@@ -1,7 +1,7 @@
 {
   "name": "subsync-ai-server",
   "version": "1.0.0",
-  "description": "SubSync AI Backend - Express + MongoDB",
+  "description": "SubSync AI Backend - Express + PostgreSQL (Prisma)",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",

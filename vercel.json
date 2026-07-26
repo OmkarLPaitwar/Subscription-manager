@@ -8,18 +8,9 @@
     }
   ],
   "routes": [
-    {
-      "src": "^/static/(.*)",
-      "dest": "/client/static/$1"
-    },
-    {
-      "src": "^/(.*\\.(js|css|png|jpg|jpeg|svg|ico|json|txt))$",
-      "dest": "/client/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/client/index.html"
-    }
+    { "src": "/static/(.*)", "dest": "/client/static/$1" },
+    { "src": "/([^/]+\\.[^/]+)$", "dest": "/client/$1" },
+    { "src": "/(.*)", "dest": "/client/index.html" }
   ],
   "env": {
     "REACT_APP_API_URL": "https://subsync-ai-api.onrender.com/api"
