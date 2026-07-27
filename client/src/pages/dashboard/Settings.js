@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { userAPI } from '../../utils/api';
 import toast from 'react-hot-toast';
@@ -41,23 +41,6 @@ export default function Settings() {
     twoFactor:          user?.preferences?.twoFactor          ?? false,
     theme:              user?.preferences?.theme              || 'dark',
   });
-
-  useEffect(() => {
-    setProfile({
-      firstName: user?.firstName || '',
-      lastName:  user?.lastName  || '',
-      phone:     user?.phone     || '',
-      company:   { name: user?.company?.name || '', gst: user?.company?.gst || '', address: user?.company?.address || '' }
-    });
-    setPrefs({
-      currency:           user?.preferences?.currency          || 'INR',
-      emailNotifications: user?.preferences?.emailNotifications ?? true,
-      smsAlerts:          user?.preferences?.smsAlerts          ?? false,
-      weeklyReport:       user?.preferences?.weeklyReport       ?? true,
-      twoFactor:          user?.preferences?.twoFactor          ?? false,
-      theme:              user?.preferences?.theme              || 'dark',
-    });
-  }, [user]);
 
   // Password
   const [pwd, setPwd] = useState({ currentPassword:'', newPassword:'', confirmPassword:'' });
@@ -114,7 +97,7 @@ export default function Settings() {
   const initials = `${user?.firstName?.[0] || ''}${user?.lastName?.[0] || ''}`.toUpperCase();
 
   return (
-    <div style={{ display:'grid', gridTemplateColumns:'200px 1fr', gap:20, animation:'fadeUp .4s ease' }}>
+    <div className="grid-2-1" style={{ animation:'fadeUp .4s ease' }}>
       {/* Sidebar Nav */}
       <div className="card" style={{ padding:10, height:'fit-content' }}>
         {TABS.map(t => (
@@ -141,7 +124,7 @@ export default function Settings() {
                 <div style={{ marginTop:6 }}><span className="badge badge-purple" style={{ textTransform:'capitalize' }}>{user?.plan || 'starter'} Plan</span></div>
               </div>
             </div>
-            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:14 }}>
+            <div className="grid-2" style={{ gap:14 }}>
               <div><label className="label">First Name</label><input className="input" value={profile.firstName} onChange={e => setProfile({...profile, firstName: e.target.value})} /></div>
               <div><label className="label">Last Name</label><input className="input" value={profile.lastName} onChange={e => setProfile({...profile, lastName: e.target.value})} /></div>
               <div style={{ gridColumn:'1/-1' }}><label className="label">Email (read-only)</label><input className="input" value={user?.email || ''} disabled style={{ opacity:.6 }} /></div>

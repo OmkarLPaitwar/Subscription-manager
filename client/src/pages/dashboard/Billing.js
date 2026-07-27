@@ -59,7 +59,7 @@ export default function Billing() {
       <p style={{ color:'var(--text2)', fontSize:13, marginBottom:24 }}>Manage your subscription plan and billing details.</p>
 
       {/* Current Plan */}
-      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:20, marginBottom:24 }}>
+      <div className="grid-2" style={{ marginBottom:24 }}>
         <div className="card" style={{ padding:24 }}>
           <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:16 }}>
             <div>
@@ -104,7 +104,7 @@ export default function Billing() {
       {/* Plan Cards */}
       <div style={{ marginBottom:24 }}>
         <h3 style={{ fontFamily:'Syne,sans-serif', fontSize:'1.1rem', fontWeight:700, marginBottom:16 }}>Available Plans</h3>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:16 }}>
+        <div className="grid-3" style={{ gap:16 }}>
           {PLANS.map(plan => (
             <div key={plan.key} style={{ padding:24, borderRadius:'var(--r)', border:`1px solid ${plan.popular ? 'var(--purple)' : 'var(--border)'}`, background: plan.popular ? 'linear-gradient(135deg,rgba(139,92,246,.08),rgba(79,142,247,.04))' : 'var(--card)', position:'relative', transition:'transform .2s' }}
               onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-4px)'}

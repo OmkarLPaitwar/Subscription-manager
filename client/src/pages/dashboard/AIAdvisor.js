@@ -13,7 +13,7 @@ const QUICK_PROMPTS = [
 
 const INIT_MSG = {
   role: 'bot',
-  content: `Hey! I'm your subscription advisor.\n\nI've connected to your subscription data and I'm ready to help you:\n\n• Find savings opportunities\n• Identify what to cancel\n• Detect duplicate tools\n• Predict upcoming bills\n• Recommend plan switches\n\nWhat would you like to explore?`,
+  content: `Hey! I'm **SubBot AI** 🤖 — your personal subscription advisor.\n\nI've connected to your subscription data and I'm ready to help you:\n\n• 💰 Find savings opportunities\n• 🗑️ Identify what to cancel\n• 🔄 Detect duplicate tools\n• 📊 Predict upcoming bills\n• 📅 Recommend plan switches\n\nWhat would you like to explore?`,
   timestamp: new Date(),
 };
 
@@ -71,7 +71,7 @@ export default function AIAdvisor() {
       setInsights(ins.data);
       setMessages(prev => [...prev, {
         role:'bot',
-        content: `**Analysis complete!**\n\nI scanned your subscriptions:\n• ${data.data.unusedCount} unused subscriptions found\n• ${data.data.duplicateCategories} duplicate tool categories\n• Potential savings: Rs. ${data.data.potentialMonthlySavings.toLocaleString()}/month\n\nCheck the Insights panel on the right for detailed recommendations!`,
+        content: `✅ **Analysis complete!**\n\nI scanned your subscriptions:\n• ${data.data.unusedCount} unused subscriptions found\n• ${data.data.duplicateCategories} duplicate tool categories\n• Potential savings: **₹${data.data.potentialMonthlySavings.toLocaleString()}/month**\n\nCheck the Insights panel on the right for detailed recommendations!`,
         timestamp: new Date()
       }]);
     } catch { toast.error('Analysis failed. Please try again.'); }
@@ -84,7 +84,7 @@ export default function AIAdvisor() {
   };
 
   return (
-    <div style={{ display:'grid', gridTemplateColumns:'1fr 300px', gap:16, animation:'fadeUp .4s ease' }}>
+    <div className="grid-2-1" style={{ animation:'fadeUp .4s ease' }}>
       {/* CHAT WINDOW */}
       <div style={S.chatWrap}>
         {/* Chat Header */}
@@ -92,7 +92,7 @@ export default function AIAdvisor() {
           <div style={{ display:'flex', alignItems:'center', gap:12 }}>
             <div style={{ width:40, height:40, borderRadius:'50%', background:'var(--grad)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:20 }}>🤖</div>
             <div>
-              <div style={{ fontWeight:700, fontSize:15 }}>Advisor</div>
+              <div style={{ fontWeight:700, fontSize:15 }}>SubBot AI</div>
               <div style={{ fontSize:12, color:'var(--green)', display:'flex', alignItems:'center', gap:5 }}>
                 <span style={{ width:6, height:6, background:'var(--green)', borderRadius:'50%', display:'inline-block' }}></span>
                 Online · Ready to optimize
@@ -150,7 +150,7 @@ export default function AIAdvisor() {
           <textarea
             ref={inputRef}
             style={{ flex:1, background:'var(--bg3)', border:'1px solid var(--border2)', color:'var(--text)', borderRadius:'var(--r2)', padding:'12px 16px', fontSize:14, resize:'none', height:48, fontFamily:'DM Sans,sans-serif', outline:'none', lineHeight:1.5 }}
-            placeholder="Ask anything about your subscriptions…"
+            placeholder="Ask SubBot AI anything about your subscriptions…"
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={handleKey}
@@ -207,7 +207,7 @@ export default function AIAdvisor() {
                     <div style={{ fontSize:11, color:'var(--green)', fontWeight:600 }}>Save ₹{ins.saving.toLocaleString()}/mo</div>
                   )}
                   <button onClick={() => send(ins.action)} style={{ marginTop:8, fontSize:11, color:'var(--blue)', background:'none', border:'none', cursor:'pointer', padding:0, fontFamily:'DM Sans,sans-serif' }}>
-                    → Ask Advisor
+                    → Ask SubBot
                   </button>
                 </div>
               ))}
@@ -232,7 +232,7 @@ export default function AIAdvisor() {
 }
 
 const S = {
-  chatWrap:   { background:'var(--card)', border:'1px solid var(--border)', borderRadius:'var(--r)', display:'flex', flexDirection:'column', height:'calc(100vh - 120px)', minHeight:500 },
+  chatWrap:   { background:'var(--card)', border:'1px solid var(--border)', borderRadius:'var(--r)', display:'flex', flexDirection:'column', height:'calc(100vh - 120px)', minHeight:400, maxHeight:700 },
   chatHeader: { padding:'16px 20px', borderBottom:'1px solid var(--border)', display:'flex', alignItems:'center', justifyContent:'space-between' },
   messages:   { flex:1, overflowY:'auto', padding:20, display:'flex', flexDirection:'column', gap:16 },
   inputArea:  { padding:'14px 16px', borderTop:'1px solid var(--border)', display:'flex', gap:10 },

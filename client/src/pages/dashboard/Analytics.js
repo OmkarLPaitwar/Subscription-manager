@@ -68,7 +68,7 @@ export default function Analytics() {
   return (
     <div style={{ animation:'fadeUp .4s ease' }}>
       {/* Summary Cards */}
-      <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:16, marginBottom:20 }}>
+      <div className="grid-4" style={{ marginBottom:20 }}>
         {[
           { label:'Current Monthly', value: loading ? '—' : `₹${currentMonthly.toLocaleString()}`, sub: `${monthGrowth > 0 ? '+' : ''}${monthGrowth}% vs last month`, color:'var(--blue)' },
           { label:'Highest Category', value: loading || !categories[0] ? '—' : categories[0]?.name, sub: categories[0] ? `₹${categories[0].total.toLocaleString()}/mo` : '', color:'var(--purple)' },
@@ -84,7 +84,7 @@ export default function Analytics() {
       </div>
 
       {/* Spend Trend + Category Pie */}
-      <div style={{ display:'grid', gridTemplateColumns:'3fr 2fr', gap:16, marginBottom:16 }}>
+      <div className="grid-2-1" style={{ marginBottom:16 }}>
         <div className="card" style={{ padding:20 }}>
           <div style={S.chartHeader}>
             <span style={S.chartTitle}>6-Month Expense Trend</span>
@@ -129,7 +129,7 @@ export default function Analytics() {
       </div>
 
       {/* Category List + Forecast */}
-      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:16, marginBottom:16 }}>
+      <div className="grid-2" style={{ marginBottom:16 }}>
         {/* Category Table */}
         <div className="card" style={{ padding:20 }}>
           <div style={S.chartHeader}><span style={S.chartTitle}>Spend by Category</span></div>

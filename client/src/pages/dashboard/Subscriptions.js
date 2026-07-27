@@ -61,7 +61,7 @@ export default function Subscriptions() {
 
   const openAdd  = () => { setEditId(null); setForm(emptyForm); setModal(true); };
   const openEdit = (sub) => {
-    setEditId(sub.id);
+    setEditId(sub._id);
     setForm({ name: sub.name, category: sub.category, cost: sub.cost, billingCycle: sub.billingCycle,
               renewalDate: sub.renewalDate?.slice(0,10) || '', paymentMethod: sub.paymentMethod || '',
               icon: sub.icon || '🔷', color: sub.color || '#4f8ef7', notes: sub.notes || '' });
@@ -98,7 +98,7 @@ export default function Subscriptions() {
   const handleStatusToggle = async (sub) => {
     const newStatus = sub.status === 'Active' ? 'Paused' : 'Active';
     try {
-      await subscriptionAPI.updateStatus(sub.id, newStatus);
+      await subscriptionAPI.updateStatus(sub._id, newStatus);
       toast.success(`${sub.name} ${newStatus.toLowerCase()}.`);
       load();
     } catch { toast.error('Failed to update status.'); }
@@ -134,7 +134,7 @@ export default function Subscriptions() {
 
       {/* Filters */}
       <div style={S.filters}>
-        <input className="input" style={{ width:220 }} placeholder="🔍  Search subscriptions…" value={search} onChange={e => setSearch(e.target.value)} />
+        <input className="input" style={{ width:'100%', maxWidth:220 }} placeholder="🔍  Search subscriptions…" value={search} onChange={e => setSearch(e.target.value)} />
         <select className="select" style={{ width:'auto' }} value={catFilter} onChange={e => setCatFilter(e.target.value)}>
           <option value="">All Categories</option>
           {CATEGORIES.map(c => <option key={c}>{c}</option>)}
@@ -166,8 +166,8 @@ export default function Subscriptions() {
             </div>}
           </div>
         ) : (
-          <div style={{ overflowX:'auto' }}>
-            <table>
+          <div style={{ overflowX:'auto', WebkitOverflowScrolling:'touch' }}>
+            <table style={{ minWidth:680 }}>
               <thead>
                 <tr>
                   <th>Service</th><th>Category</th><th>Monthly Cost</th>
@@ -179,8 +179,8 @@ export default function Subscriptions() {
                   const days = Math.ceil((new Date(sub.renewalDate) - new Date()) / 86400000);
                   const urgency = days <= 3 ? 'var(--red)' : days <= 7 ? 'var(--amber)' : 'var(--text2)';
                   return (
-                    <tr key={sub.id}>
-                      <td data-label="Service">
+                    <tr key={sub._id}>
+                      <td>
                         <div style={{ display:'flex', alignItems:'center', gap:10 }}>
                           <div style={{ width:32, height:32, borderRadius:8, background:'var(--bg3)', border:'1px solid var(--border)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:15 }}>{sub.icon || '📦'}</div>
                           <div>
@@ -189,26 +189,26 @@ export default function Subscriptions() {
                           </div>
                         </div>
                       </td>
-                      <td data-label="Category"><span className="badge badge-blue">{sub.category}</span></td>
-                      <td data-label="Monthly Cost" style={{ fontWeight:700 }}>₹{(sub.monthlyCost || sub.cost).toLocaleString()}</td>
-                      <td data-label="Billing" style={{ color:'var(--text2)', fontSize:13 }}>{sub.billingCycle}</td>
-                      <td data-label="Renewal Date">
+                      <td><span className="badge badge-blue">{sub.category}</span></td>
+                      <td style={{ fontWeight:700 }}>₹{(sub.monthlyCost || sub.cost).toLocaleString()}</td>
+                      <td style={{ color:'var(--text2)', fontSize:13 }}>{sub.billingCycle}</td>
+                      <td>
                         <div style={{ fontSize:13, color: urgency, fontWeight: days <= 7 ? 600 : 400 }}>
                           {new Date(sub.renewalDate).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' })}
                           {days <= 7 && days > 0 && <div style={{ fontSize:10 }}>({days}d left)</div>}
                         </div>
                       </td>
-                      <td data-label="Status">
+                      <td>
                         <span className={`badge ${sub.status === 'Active' ? 'badge-green' : sub.status === 'Paused' ? 'badge-amber' : 'badge-red'}`}>
                           {sub.status === 'Active' ? '● ' : '○ '}{sub.status}
                         </span>
                       </td>
-                      <td data-label="Actions">
+                      <td>
                         <button className="btn btn-outline btn-sm" style={{ marginRight:6 }} onClick={() => openEdit(sub)}>Edit</button>
                         <button className="btn btn-outline btn-sm" style={{ marginRight:6 }} onClick={() => handleStatusToggle(sub)}>
                           {sub.status === 'Active' ? 'Pause' : 'Resume'}
                         </button>
-                        <button className="btn btn-danger btn-sm" onClick={() => handleDelete(sub.id, sub.name)}>Delete</button>
+                        <button className="btn btn-danger btn-sm" onClick={() => handleDelete(sub._id, sub.name)}>Delete</button>
                       </td>
                     </tr>
                   );

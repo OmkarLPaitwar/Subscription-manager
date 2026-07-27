@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser]       = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // restore user session
+  // Boot: restore session
   useEffect(() => {
     const restore = async () => {
       const token = localStorage.getItem('accessToken');
@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }) => {
     const { data } = await authAPI.register(formData);
     saveTokens(data.accessToken, data.refreshToken);
     setUser(data.user);
-    toast.success(`Welcome, ${data.user.firstName}!`);
+    toast.success(`Welcome to SubSync AI, ${data.user.firstName}! 🎉`);
     return data;
   }, []);
 
@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }) => {
     const { data } = await authAPI.login(formData);
     saveTokens(data.accessToken, data.refreshToken);
     setUser(data.user);
-    toast.success(`Welcome back, ${data.user.firstName}!`);
+    toast.success(`Welcome back, ${data.user.firstName}! 👋`);
     return data;
   }, []);
 
@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }) => {
     const { data } = await authAPI.googleAuth(googleData);
     saveTokens(data.accessToken, data.refreshToken);
     setUser(data.user);
-    toast.success(`Welcome, ${data.user.firstName}!`);
+    toast.success(`Welcome, ${data.user.firstName}! 🚀`);
     return data;
   }, []);
 

@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
 const FEATURES = [
-  { icon:'📡', label:'feature-icon-blue',  title:'Subscription Tracking',       desc:'Auto-detect and monitor all SaaS subscriptions from email, bank SMS, and connected accounts in one dashboard.' },
-  { icon:'🔔', label:'feature-icon-amber', title:'Renewal Alerts',              desc:'Get notified 7, 3, and 1 day before any subscription renews. Never be surprised by unexpected charges again.' },
-  { icon:'🤖', label:'feature-icon-green', title:'AI Cost Optimization',        desc:'SubBot AI analyzes usage patterns to identify savings and suggest optimal plan configurations automatically.' },
-  { icon:'📊', label:'feature-icon-cyan',  title:'Usage Analytics',             desc:'Deep analytics on category-wise spending, growth forecasts, and historical trends with exportable PDF reports.' },
-  { icon:'✨', label:'feature-icon-purple',title:'Smart Recommendations',       desc:'AI-powered suggestions to switch to annual plans, cancel duplicates, and consolidate overlapping tools.' },
-  { icon:'👥', label:'feature-icon-red',   title:'Team Billing Management',     desc:'Manage company-wide subscriptions, set spend limits per team, and generate finance reports for your org.' },
+  { icon:'📡', title:'Subscription Tracking',       desc:'Auto-detect and monitor all SaaS subscriptions from email, bank SMS, and connected accounts in one dashboard.' },
+  { icon:'🔔', title:'Renewal Alerts',              desc:'Get notified 7, 3, and 1 day before any subscription renews. Never be surprised by unexpected charges again.' },
+  { icon:'🤖', title:'AI Cost Optimization',        desc:'SubBot AI analyzes usage patterns to identify savings and suggest optimal plan configurations automatically.' },
+  { icon:'📊', title:'Usage Analytics',             desc:'Deep analytics on category-wise spending, growth forecasts, and historical trends with exportable PDF reports.' },
+  { icon:'✨', title:'Smart Recommendations',       desc:'AI-powered suggestions to switch to annual plans, cancel duplicates, and consolidate overlapping tools.' },
+  { icon:'👥', title:'Team Billing Management',     desc:'Manage company-wide subscriptions, set spend limits per team, and generate finance reports for your org.' },
 ];
 
 const TESTIMONIALS = [
@@ -34,10 +34,12 @@ const PRICING = [
     cta:'Contact Sales', featured:false },
 ];
 
+const NAV_SECTIONS = ['features','how-it-works','pricing','testimonials'];
+
 export default function Landing() {
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 20);
@@ -45,20 +47,28 @@ export default function Landing() {
     return () => window.removeEventListener('scroll', fn);
   }, []);
 
-  const scrollTo = id => document.getElementById(id)?.scrollIntoView({ behavior:'smooth' });
+  const scrollTo = id => {
+    document.getElementById(id)?.scrollIntoView({ behavior:'smooth' });
+    setMobileNavOpen(false);
+  };
 
   return (
     <div>
       {/* NAV */}
-      <nav style={{ position:'fixed', top:0, left:0, right:0, zIndex:100, padding:'0 5%', height:66, display:'flex', alignItems:'center', justifyContent:'space-between', transition:'all .3s', background: (scrolled || mobileMenuOpen) ? 'var(--bg2)' : 'transparent', borderBottom: (scrolled || mobileMenuOpen) ? '1px solid var(--border)' : 'none', backdropFilter: (scrolled || mobileMenuOpen) ? 'blur(12px)' : 'none' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }} onClick={() => { window.scrollTo(0,0); setMobileMenuOpen(false); }}>
-          <img src="/logo192.png" alt="Logo" style={{ height: '32px', width: '32px', borderRadius: '6px' }} />
-          <span style={{ fontFamily:'Syne,sans-serif', fontSize:22, fontWeight:800, background:'var(--grad)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>SubSync AI</span>
-        </div>
-        
+      <nav style={{
+        position:'fixed', top:0, left:0, right:0, zIndex:100,
+        padding:'0 5%', height:66,
+        display:'flex', alignItems:'center', justifyContent:'space-between',
+        transition:'all .3s',
+        background: scrolled ? 'var(--bg)' : 'transparent',
+        borderBottom: scrolled ? '1px solid var(--border)' : 'none',
+        backdropFilter: scrolled ? 'blur(12px)' : 'none'
+      }}>
+        <span style={{ fontFamily:'Syne,sans-serif', fontSize:22, fontWeight:800, background:'var(--grad)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text', cursor:'pointer' }} onClick={() => window.scrollTo(0,0)}>SubSync AI</span>
+
         {/* Desktop nav links */}
-        <div className="landing-nav-links" style={{ display:'flex', gap:28, alignItems:'center' }}>
-          {['features','how-it-works','pricing','testimonials'].map(s => (
+        <div className="landing-nav-links">
+          {NAV_SECTIONS.map(s => (
             <span key={s} onClick={() => scrollTo(s)} style={{ color:'var(--text2)', fontSize:14, fontWeight:500, cursor:'pointer', textTransform:'capitalize', transition:'color .2s' }}
               onMouseEnter={e => e.target.style.color='var(--text)'}
               onMouseLeave={e => e.target.style.color='var(--text2)'}>
@@ -67,60 +77,59 @@ export default function Landing() {
           ))}
         </div>
 
-        {/* Desktop CTA buttons */}
-        <div className="landing-nav-buttons" style={{ display:'flex', gap:10 }}>
+        {/* Desktop action buttons */}
+        <div className="landing-nav-actions">
           <button className="btn btn-outline btn-sm" onClick={() => navigate('/login')}>Log In</button>
           <button className="btn btn-primary btn-sm" onClick={() => navigate('/signup')}>Get Started</button>
         </div>
 
-        {/* Hamburger Menu Toggle (Mobile) */}
-        <button className="landing-menu-btn" 
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          style={{ background:'transparent', border:'none', color:'var(--text)', fontSize:24, cursor:'pointer' }}>
-          {mobileMenuOpen ? '✕' : '☰'}
+        {/* Mobile hamburger */}
+        <button
+          className="landing-mobile-menu-btn"
+          onClick={() => setMobileNavOpen(!mobileNavOpen)}
+          aria-label="Toggle navigation"
+        >
+          {mobileNavOpen ? '✕' : '☰'}
         </button>
-
-        {/* Mobile menu drawer */}
-        {mobileMenuOpen && (
-          <div className="landing-mobile-menu" style={{ position:'absolute', top:66, left:0, right:0, background:'var(--bg2)', borderBottom:'1px solid var(--border)', padding:'20px 5% 30px', display:'flex', flexDirection:'column', gap:20, zIndex:99 }}>
-            {['features','how-it-works','pricing','testimonials'].map(s => (
-              <span key={s} onClick={() => { scrollTo(s); setMobileMenuOpen(false); }} 
-                style={{ color:'var(--text2)', fontSize:16, fontWeight:600, cursor:'pointer', textTransform:'capitalize', padding:'10px 0', borderBottom:'1px solid var(--border)' }}>
-                {s.replace('-',' ')}
-              </span>
-            ))}
-            <div style={{ display:'flex', flexDirection:'column', gap:12, marginTop:10 }}>
-              <button className="btn btn-outline" style={{ justifyContent:'center' }} onClick={() => { navigate('/login'); setMobileMenuOpen(false); }}>Log In</button>
-              <button className="btn btn-primary" style={{ justifyContent:'center' }} onClick={() => { navigate('/signup'); setMobileMenuOpen(false); }}>Get Started</button>
-            </div>
-          </div>
-        )}
       </nav>
+
+      {/* Mobile dropdown nav */}
+      <div className={`landing-mobile-nav${mobileNavOpen ? ' open' : ''}`}>
+        {NAV_SECTIONS.map(s => (
+          <span key={s} onClick={() => scrollTo(s)} style={{ textTransform:'capitalize' }}>
+            {s.replace('-',' ')}
+          </span>
+        ))}
+        <div style={{ display:'flex', gap:10, paddingTop:8 }}>
+          <button className="btn btn-outline btn-sm" style={{ flex:1 }} onClick={() => { navigate('/login'); setMobileNavOpen(false); }}>Log In</button>
+          <button className="btn btn-primary btn-sm" style={{ flex:1 }} onClick={() => { navigate('/signup'); setMobileNavOpen(false); }}>Get Started</button>
+        </div>
+      </div>
 
       {/* HERO */}
       <section style={{ minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', textAlign:'center', padding:'80px 5% 60px', position:'relative', overflow:'hidden' }}>
         <div className="orb" style={{ width:500, height:500, background:'var(--blue)', top:-120, left:-120 }} />
         <div className="orb" style={{ width:400, height:400, background:'var(--purple)', bottom:-100, right:-100 }} />
         <div className="orb" style={{ width:300, height:300, background:'var(--cyan)', top:'40%', left:'50%', transform:'translate(-50%,-50%)' }} />
-        <div style={{ position:'relative', zIndex:1, maxWidth:900, animation:'fadeUp .8s ease' }}>
+        <div style={{ position:'relative', zIndex:1, maxWidth:900, animation:'fadeUp .8s ease', width:'100%' }}>
           <div style={{ display:'inline-flex', alignItems:'center', gap:8, background:'rgba(79,142,247,.1)', border:'1px solid rgba(79,142,247,.3)', borderRadius:20, padding:'6px 16px', fontSize:13, color:'var(--blue)', marginBottom:28 }}>
             <span style={{ width:6, height:6, background:'var(--blue)', borderRadius:'50%', animation:'pulse 2s infinite' }}></span>
             Powered by AI · Trusted by 10,000+ teams
           </div>
-          <h1 style={{ fontFamily:'Syne,sans-serif', fontSize:'clamp(2.4rem,6vw,4.2rem)', fontWeight:800, lineHeight:1.1, marginBottom:24 }}>
+          <h1 style={{ fontFamily:'Syne,sans-serif', fontSize:'clamp(2rem,6vw,4.2rem)', fontWeight:800, lineHeight:1.1, marginBottom:24 }}>
             <span className="grad-text">Manage All Your</span><br/>Subscriptions with AI
           </h1>
-          <p style={{ fontSize:'1.1rem', color:'var(--text2)', maxWidth:580, margin:'0 auto 40px', lineHeight:1.7 }}>
+          <p style={{ fontSize:'clamp(0.95rem,2vw,1.1rem)', color:'var(--text2)', maxWidth:580, margin:'0 auto 40px', lineHeight:1.7 }}>
             Track renewals, reduce costs, avoid unused plans, and optimize spending automatically. Your intelligent subscription command center.
           </p>
           <div style={{ display:'flex', gap:14, justifyContent:'center', flexWrap:'wrap' }}>
             <button className="btn btn-primary btn-lg" onClick={() => navigate('/signup')}>Get Started Free →</button>
             <button className="btn btn-outline btn-lg" onClick={() => scrollTo('features')}>Explore Features ↓</button>
           </div>
-          <div style={{ display:'flex', gap:40, justifyContent:'center', marginTop:60, flexWrap:'wrap' }}>
+          <div style={{ display:'flex', gap:24, justifyContent:'center', marginTop:60, flexWrap:'wrap' }}>
             {[['₹2.4L','Avg. Yearly Savings'],['10K+','Teams Onboarded'],['98%','Customer Satisfaction'],['140+','Integrations']].map(([v,l]) => (
-              <div key={l} style={{ textAlign:'center' }}>
-                <div style={{ fontFamily:'Syne,sans-serif', fontSize:'2rem', fontWeight:800, background:'var(--grad)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>{v}</div>
+              <div key={l} style={{ textAlign:'center', minWidth:80 }}>
+                <div style={{ fontFamily:'Syne,sans-serif', fontSize:'clamp(1.4rem,3vw,2rem)', fontWeight:800, background:'var(--grad)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>{v}</div>
                 <div style={{ fontSize:13, color:'var(--text2)', marginTop:4 }}>{l}</div>
               </div>
             ))}
@@ -135,12 +144,13 @@ export default function Landing() {
           <h2 style={S.sectionTitle}>Everything you need to <span className="grad-text">master subscriptions</span></h2>
           <p style={S.sectionSub}>One intelligent platform to track, optimize, and control every recurring expense.</p>
         </div>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(300px,1fr))', gap:20 }}>
+        {/* 3-col → 2-col → 1-col */}
+        <div className="grid-3">
           {FEATURES.map((f, i) => (
             <div key={i} className="card" style={{ padding:28, position:'relative', overflow:'hidden', transition:'transform .3s' }}
               onMouseEnter={e => e.currentTarget.style.transform='translateY(-4px)'}
               onMouseLeave={e => e.currentTarget.style.transform='translateY(0)'}>
-              <div style={{ width:52, height:52, borderRadius:14, background:`rgba(79,142,247,.1)`, border:'1px solid rgba(79,142,247,.2)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:24, marginBottom:18 }}>{f.icon}</div>
+              <div style={{ width:52, height:52, borderRadius:14, background:'rgba(79,142,247,.1)', border:'1px solid rgba(79,142,247,.2)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:24, marginBottom:18 }}>{f.icon}</div>
               <h3 style={{ fontFamily:'Syne,sans-serif', fontSize:'1.05rem', marginBottom:10 }}>{f.title}</h3>
               <p style={{ color:'var(--text2)', fontSize:14, lineHeight:1.65 }}>{f.desc}</p>
             </div>
@@ -154,8 +164,9 @@ export default function Landing() {
           <div style={S.sectionTag}>Process</div>
           <h2 style={S.sectionTitle}>How <span className="grad-text">SubSync AI</span> works</h2>
         </div>
-        <div className="process-grid" style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:24, position:'relative' }}>
-          <div className="process-line" style={{ position:'absolute', top:44, left:'calc(16.67% + 20px)', right:'calc(16.67% + 20px)', height:2, background:'linear-gradient(to right,var(--blue),var(--purple))', zIndex:0 }} />
+        <div className="landing-how-grid" style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:24, position:'relative' }}>
+          {/* Connector line — hidden on mobile via CSS */}
+          <div className="landing-how-connector" style={{ position:'absolute', top:44, left:'calc(16.67% + 20px)', right:'calc(16.67% + 20px)', height:2, background:'linear-gradient(to right,var(--blue),var(--purple))', zIndex:0 }} />
           {STEPS.map((step, i) => (
             <div key={i} className="glass" style={{ padding:'28px 20px', textAlign:'center', position:'relative', zIndex:1, transition:'transform .3s' }}
               onMouseEnter={e => e.currentTarget.style.transform='translateY(-6px)'}
@@ -175,7 +186,8 @@ export default function Landing() {
           <h2 style={S.sectionTitle}>Simple, <span className="grad-text">transparent</span> pricing</h2>
           <p style={S.sectionSub}>Start free, scale as you grow. Every plan includes AI-powered insights.</p>
         </div>
-        <div className="pricing-grid" style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:20 }}>
+        {/* 3-col → 1-col on mobile (via CSS class) */}
+        <div className="landing-pricing-grid" style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:20 }}>
           {PRICING.map((plan, i) => (
             <div key={i} style={{ padding:28, borderRadius:'var(--r)', border:`1px solid ${plan.featured ? 'var(--purple)' : 'var(--border)'}`, background: plan.featured ? 'linear-gradient(135deg,rgba(139,92,246,.08),rgba(79,142,247,.04))' : 'var(--card)', position:'relative', transition:'transform .3s' }}
               onMouseEnter={e => e.currentTarget.style.transform='translateY(-6px)'}
@@ -204,13 +216,14 @@ export default function Landing() {
           <div style={S.sectionTag}>Testimonials</div>
           <h2 style={S.sectionTitle}>Loved by <span className="grad-text">founders & teams</span></h2>
         </div>
-        <div className="testimonials-grid" style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:18 }}>
+        {/* 3-col → 1-col via CSS class */}
+        <div className="landing-testimonials-grid" style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:18 }}>
           {TESTIMONIALS.map((t, i) => (
             <div key={i} className="card" style={{ padding:24 }}>
               <div style={{ color:'var(--amber)', fontSize:14, marginBottom:14 }}>{'★'.repeat(t.stars)}</div>
               <p style={{ color:'var(--text2)', fontSize:14, lineHeight:1.7, marginBottom:20, fontStyle:'italic' }}>{t.text}</p>
               <div style={{ display:'flex', alignItems:'center', gap:12 }}>
-                <div style={{ width:40, height:40, borderRadius:'50%', background:t.color, display:'flex', alignItems:'center', justifyContent:'center', fontWeight:700, fontSize:13, color:'#fff' }}>{t.name.split(' ').map(n=>n[0]).join('')}</div>
+                <div style={{ width:40, height:40, borderRadius:'50%', background:t.color, display:'flex', alignItems:'center', justifyContent:'center', fontWeight:700, fontSize:13, color:'#fff', flexShrink:0 }}>{t.name.split(' ').map(n=>n[0]).join('')}</div>
                 <div><div style={{ fontWeight:600, fontSize:14 }}>{t.name}</div><div style={{ fontSize:12, color:'var(--text3)' }}>{t.role}</div></div>
               </div>
             </div>
@@ -220,7 +233,7 @@ export default function Landing() {
 
       {/* CTA BANNER */}
       <section style={{ padding:'60px 5%', margin:'0 5% 60px', background:'var(--grad)', borderRadius:20, textAlign:'center' }}>
-        <h2 style={{ fontFamily:'Syne,sans-serif', fontSize:'clamp(1.6rem,4vw,2.4rem)', fontWeight:800, color:'#fff', marginBottom:12 }}>Ready to take control of your subscriptions?</h2>
+        <h2 style={{ fontFamily:'Syne,sans-serif', fontSize:'clamp(1.4rem,4vw,2.4rem)', fontWeight:800, color:'#fff', marginBottom:12 }}>Ready to take control of your subscriptions?</h2>
         <p style={{ color:'rgba(255,255,255,.8)', fontSize:16, marginBottom:28 }}>Join 10,000+ teams saving money with SubSync AI.</p>
         <button className="btn btn-lg" style={{ background:'#fff', color:'#4f8ef7', fontWeight:700, borderRadius:'var(--r2)' }} onClick={() => navigate('/signup')}>Start Free — No Credit Card →</button>
       </section>
@@ -228,12 +241,10 @@ export default function Landing() {
       {/* FOOTER */}
       <footer style={{ padding:'50px 5% 30px', borderTop:'1px solid var(--border)' }}>
         <div style={{ maxWidth:1200, margin:'0 auto' }}>
-          <div className="landing-footer-grid" style={{ display:'grid', gridTemplateColumns:'2fr 1fr 1fr 1fr', gap:40, marginBottom:40 }}>
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: 12 }}>
-                <img src="/logo192.png" alt="Logo" style={{ height: '24px', width: '24px', borderRadius: '5px' }} />
-                <span style={{ fontFamily:'Syne,sans-serif', fontSize:20, fontWeight:800, background:'var(--grad)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>SubSync AI</span>
-              </div>
+          {/* 4-col → 2-col → 1-col via CSS classes */}
+          <div className="footer-grid" style={{ display:'grid', gridTemplateColumns:'2fr 1fr 1fr 1fr', gap:40, marginBottom:40 }}>
+            <div className="footer-brand">
+              <div style={{ fontFamily:'Syne,sans-serif', fontSize:20, fontWeight:800, background:'var(--grad)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text', marginBottom:12 }}>SubSync AI</div>
               <p style={{ color:'var(--text2)', fontSize:13, lineHeight:1.7, maxWidth:240 }}>The intelligent subscription management platform for modern businesses and individuals.</p>
             </div>
             {[
@@ -249,7 +260,7 @@ export default function Landing() {
           </div>
           <div style={{ borderTop:'1px solid var(--border)', paddingTop:24, display:'flex', justifyContent:'space-between', alignItems:'center', fontSize:13, color:'var(--text3)', flexWrap:'wrap', gap:10 }}>
             <span>© 2026 SubSync AI. All rights reserved.</span>
-            <span>Developed By Omkar Paitwar</span>
+            <span>Developed by omkar</span>
           </div>
         </div>
       </footer>
@@ -259,6 +270,6 @@ export default function Landing() {
 
 const S = {
   sectionTag:  { display:'inline-block', background:'rgba(139,92,246,.1)', border:'1px solid rgba(139,92,246,.3)', color:'var(--purple)', padding:'5px 16px', borderRadius:20, fontSize:12, fontWeight:600, marginBottom:14, letterSpacing:1, textTransform:'uppercase' },
-  sectionTitle:{ fontFamily:'Syne,sans-serif', fontSize:'clamp(1.8rem,4vw,2.6rem)', fontWeight:800, lineHeight:1.2, marginBottom:14 },
+  sectionTitle:{ fontFamily:'Syne,sans-serif', fontSize:'clamp(1.6rem,4vw,2.6rem)', fontWeight:800, lineHeight:1.2, marginBottom:14 },
   sectionSub:  { color:'var(--text2)', fontSize:'1rem', maxWidth:480, margin:'0 auto' },
 };

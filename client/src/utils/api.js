@@ -1,10 +1,6 @@
 import axios from 'axios';
 
-let BASE_URL = process.env.REACT_APP_API_URL || '/api';
-if (!BASE_URL.endsWith('/api') && BASE_URL !== '/api') {
-  // If the user forgot to add /api in their Vercel env vars, add it automatically
-  BASE_URL = BASE_URL.endsWith('/') ? `${BASE_URL}api` : `${BASE_URL}/api`;
-}
+const BASE_URL = process.env.REACT_APP_API_URL || '/api';
 
 const api = axios.create({
   baseURL: BASE_URL,
@@ -12,14 +8,14 @@ const api = axios.create({
   timeout: 15000,
 });
 
-
+// ─── Request interceptor: attach token ────────────────────────────────────────
 api.interceptors.request.use(config => {
   const token = localStorage.getItem('accessToken');
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 }, err => Promise.reject(err));
 
-
+// ─── Response interceptor: auto-refresh token ─────────────────────────────────
 api.interceptors.response.use(
   res => res,
   async err => {
@@ -41,7 +37,7 @@ api.interceptors.response.use(
   }
 );
 
-
+// ─── Auth ──────────────────────────────────────────────────────────────────────
 export const authAPI = {
   register:       data => api.post('/auth/register', data),
   login:          data => api.post('/auth/login', data),
@@ -52,7 +48,7 @@ export const authAPI = {
   resetPassword:  (token, data) => api.put(`/auth/reset-password/${token}`, data),
 };
 
-
+// ─── Subscriptions ────────────────────────────────────────────────────────────
 export const subscriptionAPI = {
   getAll:       params => api.get('/subscriptions', { params }),
   getOne:       id     => api.get(`/subscriptions/${id}`),
@@ -65,7 +61,7 @@ export const subscriptionAPI = {
   bulkImport:   data   => api.post('/subscriptions/bulk-import', data),
 };
 
-
+// ─── Analytics ────────────────────────────────────────────────────────────────
 export const analyticsAPI = {
   monthlySpend:       months => api.get('/analytics/monthly-spend', { params: { months } }),
   categoryBreakdown:  ()     => api.get('/analytics/category-breakdown'),
@@ -74,14 +70,14 @@ export const analyticsAPI = {
   topSubscriptions:   limit  => api.get('/analytics/top-subscriptions', { params: { limit } }),
 };
 
-
+// ─── AI ───────────────────────────────────────────────────────────────────────
 export const aiAPI = {
   chat:       (message, history) => api.post('/ai/chat', { message, history }),
   analyze:    () => api.get('/ai/analyze'),
   getInsights:() => api.get('/ai/insights'),
 };
 
-
+// ─── Notifications ────────────────────────────────────────────────────────────
 export const notificationAPI = {
   getAll:        params => api.get('/notifications', { params }),
   markRead:      id     => api.patch(`/notifications/${id}/read`),
@@ -90,14 +86,14 @@ export const notificationAPI = {
   unreadCount:   ()     => api.get('/notifications/unread-count'),
 };
 
-
+// ─── Billing ──────────────────────────────────────────────────────────────────
 export const billingAPI = {
   getCurrentPlan: () => api.get('/billing/current-plan'),
   getPlans:       () => api.get('/billing/plans'),
   upgrade:        plan => api.post('/billing/upgrade', { plan }),
 };
 
-
+// ─── Users ────────────────────────────────────────────────────────────────────
 export const userAPI = {
   updateProfile:     data => api.put('/users/profile', data),
   updatePreferences: data => api.put('/users/preferences', data),

@@ -25,7 +25,7 @@ export default function Login() {
 
   const demoLogin = () => {
     setForm({ email: 'demo@subsync.ai', password: 'demo1234' });
-    toast.success('Demo credentials filled in');
+    toast('Demo credentials filled in!', { icon: '✨' });
   };
 
   return (
@@ -34,10 +34,7 @@ export default function Login() {
       <div className="orb" style={{ width:300, height:300, background:'var(--purple)', bottom:-80, right:-80 }} />
 
       <div className="glass animate-fadeUp" style={styles.card}>
-        <Link to="/" style={{ ...styles.logo, display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <img src="/logo192.png" alt="Logo" style={{ height: '32px', width: '32px', borderRadius: '6px' }} />
-          SubSync AI
-        </Link>
+        <Link to="/" style={styles.logo}>SubSync AI</Link>
         <h2 style={styles.title}>Welcome back</h2>
         <p style={styles.sub}>Sign in to your subscription dashboard</p>
 
@@ -46,7 +43,8 @@ export default function Login() {
           Continue with Google
         </button>
 
-        <div style={styles.divider}><span>or sign in with email</span></div>
+        {/* Fixed divider with lines via CSS class */}
+        <div className="divider"><span>or sign in with email</span></div>
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -63,10 +61,10 @@ export default function Login() {
               value={form.password} onChange={e => setForm({...form, password: e.target.value})} />
           </div>
           <button className="btn btn-primary" style={{ width:'100%', marginBottom:10 }} type="submit" disabled={loading}>
-            {loading ? 'Signing in...' : 'Sign In'}
+            {loading ? <span className="animate-spin">⏳</span> : 'Sign In →'}
           </button>
           <button className="btn btn-outline" style={{ width:'100%', fontSize:13 }} type="button" onClick={demoLogin}>
-            Use Demo Account
+            ✨ Use Demo Account
           </button>
         </form>
 
@@ -80,11 +78,10 @@ export default function Login() {
 
 const styles = {
   page:     { minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', padding:'60px 20px', position:'relative', overflow:'hidden' },
-  card:     { width:'100%', maxWidth:420, padding:40, position:'relative', zIndex:1 },
+  card:     { width:'100%', maxWidth:420, padding:'40px 32px', position:'relative', zIndex:1 },
   logo:     { fontFamily:'Syne,sans-serif', fontSize:22, fontWeight:800, background:'var(--grad)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text', display:'block', marginBottom:24 },
   title:    { fontSize:'1.8rem', fontWeight:800, marginBottom:6 },
   sub:      { color:'var(--text2)', fontSize:14, marginBottom:28 },
   googleBtn:{ width:'100%', padding:12, background:'var(--bg3)', border:'1px solid var(--border2)', color:'var(--text)', borderRadius:'var(--r2)', fontSize:14, fontWeight:500, display:'flex', alignItems:'center', justifyContent:'center', gap:10, marginBottom:20, cursor:'pointer', fontFamily:'DM Sans,sans-serif', transition:'all .2s' },
-  divider:  { display:'flex', alignItems:'center', gap:12, color:'var(--text3)', fontSize:12, marginBottom:20, textAlign:'center' },
   footer:   { textAlign:'center', fontSize:13, color:'var(--text2)', marginTop:20 }
 };

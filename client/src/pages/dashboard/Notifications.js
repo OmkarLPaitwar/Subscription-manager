@@ -62,7 +62,7 @@ export default function Notifications() {
   const markRead = async (id) => {
     try {
       if (id) await notificationAPI.markRead(id);
-      setNotifs(prev => prev.map(n => n.id === id || !id ? { ...n, isRead:true } : n));
+      setNotifs(prev => prev.map(n => n._id === id || !id ? { ...n, isRead:true } : n));
       setUnread(0);
     } catch {}
   };
@@ -82,7 +82,7 @@ export default function Notifications() {
   const dismiss = async (id) => {
     try {
       if (id) await notificationAPI.remove(id);
-      setNotifs(prev => prev.filter(n => n.id !== id && n !== id));
+      setNotifs(prev => prev.filter(n => n._id !== id && n !== id));
       toast('Notification dismissed.', { icon:'🗑️' });
     } catch {
       setNotifs(prev => prev.filter((_, i) => i !== id));
@@ -138,12 +138,12 @@ export default function Notifications() {
           {filtered.map((notif, idx) => {
             const meta = TYPE_META[notif.type] || TYPE_META.system;
             return (
-              <div key={notif.id || idx}
+              <div key={notif._id || idx}
                 style={{ display:'flex', alignItems:'flex-start', gap:14, padding:'16px 20px',
                   background:'var(--card)', border:`1px solid var(--border)`,
                   borderLeft: !notif.isRead ? `3px solid var(--blue)` : '1px solid var(--border)',
                   borderRadius:'var(--r)', transition:'all .2s', cursor:'pointer' }}
-                onClick={() => !notif.isRead && markRead(notif.id)}>
+                onClick={() => !notif.isRead && markRead(notif._id)}>
                 <div style={{ width:42, height:42, borderRadius:10, background: meta.bg, border:`1px solid ${meta.border}`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:18, flexShrink:0 }}>
                   {meta.icon}
                 </div>
@@ -160,9 +160,9 @@ export default function Notifications() {
                     <span style={{ fontSize:11, color:'var(--text3)' }}>{timeAgo(notif.createdAt)}</span>
                     <div style={{ display:'flex', gap:6, marginLeft:'auto' }}>
                       {!notif.isRead && (
-                        <button className="btn btn-outline btn-sm" style={{ fontSize:11 }} onClick={e => { e.stopPropagation(); markRead(notif.id); }}>Mark read</button>
+                        <button className="btn btn-outline btn-sm" style={{ fontSize:11 }} onClick={e => { e.stopPropagation(); markRead(notif._id); }}>Mark read</button>
                       )}
-                      <button className="btn btn-outline btn-sm" style={{ fontSize:11 }} onClick={e => { e.stopPropagation(); dismiss(notif.id || idx); }}>Dismiss</button>
+                      <button className="btn btn-outline btn-sm" style={{ fontSize:11 }} onClick={e => { e.stopPropagation(); dismiss(notif._id || idx); }}>Dismiss</button>
                     </div>
                   </div>
                 </div>

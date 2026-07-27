@@ -60,16 +60,16 @@ export default function Overview() {
 
   return (
     <div style={{ animation:'fadeUp .4s ease' }}>
-      {/* Metrics */}
-      <div className="dashboard-grid metrics-grid" style={S.metricsGrid}>
+      {/* Metrics — 4-col → 2-col → 1-col */}
+      <div className="grid-4" style={{ marginBottom:20 }}>
         <MetricCard icon="💳" label="Active Subscriptions" value={summary?.totalActive ?? '—'} change={`${summary?.totalActive ?? 0} tracked tools`} changeType="neutral" color="var(--blue)" loading={loading} />
         <MetricCard icon="💰" label="Monthly Spend"        value={loading ? '—' : fmt(summary?.totalMonthly ?? 0)} change={`₹${Math.round((summary?.totalMonthly ?? 0) * 12).toLocaleString()}/year`} changeType="neutral" color="var(--purple)" loading={loading} />
         <MetricCard icon="⏰" label="Renewals This Week"  value={summary?.upcomingRenewals?.length ?? '—'} change={summary?.upcomingRenewals?.map(s => s.name).slice(0,2).join(', ') || 'None upcoming'} changeType="neutral" color="var(--amber)" loading={loading} />
         <MetricCard icon="🎯" label="AI Savings Found"    value={loading ? '—' : fmt(summary?.potentialSavings ?? 0)} change={`${summary?.unusedCount ?? 0} unused subscriptions`} changeType="up" color="var(--green)" loading={loading} />
       </div>
 
-      {/* Charts Row */}
-      <div className="dashboard-grid charts-grid" style={S.chartsGrid}>
+      {/* Charts Row — 2fr 1fr → stacked */}
+      <div className="grid-2-1" style={{ marginBottom:16 }}>
         {/* Spend Bar Chart */}
         <div className="card" style={{ padding:20 }}>
           <div style={S.chartHeader}>
@@ -110,13 +110,13 @@ export default function Overview() {
                 return (
                   <div key={i} style={S.renewalItem}>
                     <div style={{ width:36, height:36, borderRadius:8, background:`${urgency}20`, border:`1px solid ${urgency}40`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:16, flexShrink:0 }}>{s.icon || '📦'}</div>
-                    <div style={{ flex:1 }}>
-                      <div style={{ fontSize:13, fontWeight:600 }}>{s.name}</div>
+                    <div style={{ flex:1, minWidth:0 }}>
+                      <div style={{ fontSize:13, fontWeight:600, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{s.name}</div>
                       <div style={{ fontSize:11, color:'var(--text3)' }}>{new Date(s.renewalDate).toLocaleDateString('en-IN', { day:'numeric', month:'short' })}</div>
                     </div>
-                    <div>
+                    <div style={{ textAlign:'right', flexShrink:0 }}>
                       <div style={{ fontSize:13, fontWeight:700 }}>₹{s.monthlyCost?.toLocaleString()}</div>
-                      <div style={{ fontSize:11, color: urgency, textAlign:'right' }}>{days}d</div>
+                      <div style={{ fontSize:11, color: urgency }}>{days}d</div>
                     </div>
                   </div>
                 );
@@ -125,8 +125,8 @@ export default function Overview() {
         </div>
       </div>
 
-      {/* Category + Insights */}
-      <div className="dashboard-grid bottom-grid" style={S.bottomGrid}>
+      {/* Category + Insights — 2-col → 1-col */}
+      <div className="grid-2" style={{ marginBottom:16 }}>
         {/* Pie Chart */}
         <div className="card" style={{ padding:20 }}>
           <div style={S.chartHeader}><span style={S.chartTitle}>Category Breakdown</span></div>
@@ -175,9 +175,9 @@ export default function Overview() {
 
       {/* Most Expensive */}
       {summary?.mostExpensive && (
-        <div className="card" style={{ padding:20, marginTop:16, display:'flex', alignItems:'center', gap:16 }}>
+        <div className="card" style={{ padding:20, display:'flex', alignItems:'center', gap:16, flexWrap:'wrap' }}>
           <div style={{ fontSize:32 }}>🏆</div>
-          <div style={{ flex:1 }}>
+          <div style={{ flex:1, minWidth:160 }}>
             <div style={{ fontSize:12, color:'var(--text3)', marginBottom:2 }}>MOST EXPENSIVE SUBSCRIPTION</div>
             <div style={{ fontSize:16, fontWeight:700 }}>{summary.mostExpensive.name} <span style={{ fontSize:13, color:'var(--text2)', fontWeight:400 }}>({summary.mostExpensive.category})</span></div>
           </div>
@@ -193,9 +193,6 @@ export default function Overview() {
 }
 
 const S = {
-  metricsGrid: { display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:16, marginBottom:20 },
-  chartsGrid:  { display:'grid', gridTemplateColumns:'2fr 1fr', gap:16, marginBottom:16 },
-  bottomGrid:  { display:'grid', gridTemplateColumns:'1fr 1fr', gap:16 },
   chartHeader: { display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:16 },
   chartTitle:  { fontFamily:'Syne,sans-serif', fontSize:15, fontWeight:700 },
   renewalItem: { display:'flex', alignItems:'center', gap:12, padding:'10px 12px', background:'var(--bg3)', borderRadius:8, marginBottom:8, transition:'background .2s', cursor:'pointer' },
