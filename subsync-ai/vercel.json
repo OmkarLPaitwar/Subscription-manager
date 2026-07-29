@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "name": "subsync-ai",
+  "buildCommand": "cd client && npm install && npm run build",
+  "outputDirectory": "client/build",
+  "framework": null,
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "env": {
+    "REACT_APP_API_URL": "https://subsync-ai-api.onrender.com/api"
+  }
+}
